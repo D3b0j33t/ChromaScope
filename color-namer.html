@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Color Name Finder | Debojeet Bhowmick</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{
+      --bg-1: rgba(10,14,23,1);
+      --accent: rgba(56,189,248,0.95);
+      --muted: rgba(226,232,240,0.75);
+      --card-border: rgba(255,255,255,0.08);
+      --radius: 16px;
+      --header-height: 80px;
+      --footer-height: 60px;
+    }
+    
+    /* Header Styles */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: linear-gradient(180deg, rgba(10,14,23,0.95), rgba(10,14,23,0.85));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 100;
+    }
+
+    .header-logo {
+      font-size: 24px;
+      font-weight: 800;
+      text-decoration: none;
+      background: linear-gradient(
+        to right,
+        #FF69B4, /* Hot Pink */
+        #8A2BE2, /* Blue Violet */
+        #4B0082, /* Indigo */
+        #00CED1, /* Dark Turquoise */
+        #98FB98, /* Pale Green */
+        #FFD700, /* Gold */
+        #FF69B4  /* Hot Pink again to loop smoothly */
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 300% auto;
+      animation: rainbow 8s ease-in-out infinite;
+      transform: translateZ(0);
+      will-change: background-position;
+      transition: transform 0.3s ease;
+    }
+
+    .header-logo:hover {
+      transform: scale(1.05) translateZ(0);
+    }
+
+    @keyframes rainbow {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    .header-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .header-nav a:hover {
+      color: var(--accent);
+    }
+
+    /* Footer Styles */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--footer-height);
+      background: linear-gradient(0deg, rgba(10,14,23,0.95), rgba(10,14,23,0.85));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 32px;
+      z-index: 100;
+    }
+
+    .footer-content {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .footer-content a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .footer-content a:hover {
+      opacity: 0.8;
+    }
+    *{box-sizing:border-box;}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(56,189,248,0.06), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(99,102,241,0.05), transparent 12%),
+                  var(--bg-1);
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction: column;
+      min-height:100vh;
+    }
+    
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--header-height) + 20px) 20px calc(var(--footer-height) + 20px);
+    }
+    .orb {
+      position: fixed;
+      filter: blur(60px) saturate(120%);
+      opacity:0.12;
+      pointer-events:none;
+      z-index:0;
+    }
+    .orb.o1{ width:420px;height:420px; left:-120px; top:-80px; background:linear-gradient(90deg,#7c3aed,#06b6d4);}
+    .orb.o2{ width:360px;height:360px; right:-110px; bottom:-100px; background:linear-gradient(90deg,#ef4444,#f59e0b);}
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1200px; /* Increased from 1100px */
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(300px, 1.5fr); /* Better column proportions */
+      gap: 32px; /* Increased from 24px */
+      padding: clamp(20px, 4vw, 40px); /* Responsive padding */
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--card-border);
+      box-shadow: 0 8px 40px rgba(3,7,18,0.7);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      margin: clamp(16px, 3vw, 32px); /* Added responsive margin */
+    }
+    .left, .right {
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .swatch {
+      border-radius:14px;
+      min-height:280px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: #40E0D0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 4px 20px rgba(0,0,0,0.3);
+      transition: background 300ms ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .swatch::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:inherit;
+      opacity:0.3;
+      filter: blur(40px);
+    }
+    .swatch-content {
+      position:relative;
+      z-index:1;
+      text-align:center;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border-radius:12px;
+      padding:16px 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .swatch-hex {
+      font-size:24px;
+      font-weight:800;
+      color:#fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      margin-bottom:8px;
+      letter-spacing:-0.5px;
+    }
+    .swatch-name {
+      font-size:18px;
+      font-weight:700;
+      color:rgba(255,255,255,0.95);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .input-section {
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .label {
+      font-size:13px;
+      font-weight:700;
+      color: rgba(230,238,248,0.8);
+    }
+    .input-row {
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+    }
+    .hex-input {
+      flex:1;
+      padding:12px 14px;
+      border-radius:12px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      color: #e6eef8;
+      font-size:15px;
+      font-weight:600;
+      outline:none;
+      box-shadow: 0 4px 12px rgba(2,6,23,0.4);
+      transition: all 200ms;
+    }
+    .hex-input:focus {
+      border-color: rgba(56,189,248,0.3);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    }
+    .hex-input::placeholder{ color: rgba(230,238,248,0.35); font-weight:500; }
+    .color-picker-wrapper {
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .color-picker {
+      width:52px;
+      height:46px;
+      border-radius:12px;
+      border: 2px solid rgba(255,255,255,0.08);
+      background: transparent;
+      cursor:pointer;
+      padding:0;
+      outline:none;
+      overflow:hidden;
+    }
+    .color-picker::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .color-picker::-webkit-color-swatch {
+      border: none;
+      border-radius: 10px;
+    }
+    .color-picker::-moz-color-swatch {
+      border: none;
+      border-radius: 10px;
+    }
+    .btn {
+      padding:12px 16px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      user-select:none;
+      transition: all 200ms;
+      white-space:nowrap;
+      font-family: inherit;
+    }
+    .btn:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border-color: rgba(255,255,255,0.1);
+      transform: translateY(-1px);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+    .btn.primary {
+      background: linear-gradient(180deg, rgba(56,189,248,0.18), rgba(99,102,241,0.08));
+      color: white;
+      border: 1px solid rgba(56,189,248,0.25);
+    }
+    .btn.primary:hover {
+      background: linear-gradient(180deg, rgba(56,189,248,0.25), rgba(99,102,241,0.12));
+      box-shadow: 0 4px 12px rgba(56,189,248,0.2);
+    }
+    .small {
+      font-size:13px;
+      color: rgba(230,238,248,0.7);
+    }
+    .title {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .title h2 {
+      margin:0;
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-0.3px;
+      color:#f8fbff;
+    }
+    .subtitle { 
+      color:var(--muted); 
+      font-weight:600; 
+      font-size:12px; 
+    }
+    .name-plate {
+      padding:20px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .color-name {
+      font-size:26px;
+      font-weight:800;
+      color:#fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      line-height:1.2;
+    }
+    .color-hex-display {
+      font-size:15px;
+      color:rgba(230,238,248,0.65);
+      font-weight:600;
+      margin-top:4px;
+      font-family: 'Courier New', monospace;
+    }
+    .meta-list {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .pill {
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.06);
+      font-weight:700;
+      font-size:12px;
+      color:var(--muted);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+    .matches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: clamp(12px, 2vw, 20px);
+      margin-top: 16px;
+    }
+    .match {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: clamp(14px, 2vw, 20px);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 200ms;
+      cursor:pointer;
+    }
+    .match:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border-color: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .match .dot {
+      width:28px;
+      height:28px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.1);
+      flex-shrink:0;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .match-info {
+      flex: 1;
+      min-width: 0;
+      margin-right: 12px;
+    }
+    .match-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .match-hex {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: rgba(230,238,248,0.65);
+      margin-bottom: 4px;
+    }
+    .match-accuracy {
+      font-size: 11px;
+      color: rgba(230,238,248,0.5);
+      font-weight: 600;
+    }
+    .match-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .match-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      transition: all 200ms;
+    }
+    .match-btn:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-1px);
+    }
+    .error {
+      color:#ff8080;
+      font-weight:700;
+      font-size:13px;
+      padding:8px 12px;
+      border-radius:8px;
+      background: rgba(255,128,128,0.1);
+      border: 1px solid rgba(255,128,128,0.2);
+      display:none;
+    }
+    .error.show {
+      display:block;
+    }
+    .section-header {
+      font-weight:800;
+      font-size:16px;
+      color:#f8fbff;
+      margin-bottom:4px;
+    }
+    
+    @media (max-width:1200px) {
+      .card {
+        grid-template-columns: minmax(280px, 1fr) minmax(280px, 1.2fr);
+        gap: 24px;
+      }
+      
+      .matches {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+    
+    @media (max-width:900px){
+      .card { 
+        grid-template-columns: 1fr; 
+        gap: clamp(16px, 3vw, 24px);
+      }
+      .swatch { min-height: clamp(200px, 30vh, 280px); }
+      .input-row { flex-wrap:nowrap; }
+      .color-picker-wrapper {
+        display: grid;
+        grid-template-columns: auto 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+      .matches { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+      .name-plate { padding: clamp(16px, 3vw, 24px); }
+      .match-actions {
+        flex-direction: row;
+        gap: 8px;
+      }
+    }
+    
+    @media (max-width:640px) {
+      html, body {
+        padding: 12px;
+      }
+  
+      .card {
+        padding: 16px;
+        gap: 16px;
+        margin: 8px;
+      }
+  
+      .input-row {
+        flex-wrap: wrap;
+      }
+  
+      .hex-input {
+        width: 100%;
+      }
+  
+      .color-picker-wrapper {
+        grid-template-columns: auto 1fr;
+        gap: 8px;
+      }
+  
+      .btn {
+        padding: 10px;
+        font-size: 12px;
+        width: 100%;
+      }
+  
+      .matches {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+  
+      .match {
+        padding: 12px;
+      }
+  
+      .match-actions {
+        flex-direction: column;
+        width: 80px;
+      }
+  
+      .match-btn {
+        padding: 6px 8px;
+        width: 100%;
+      }
+  
+      .color-name {
+        font-size: clamp(18px, 5vw, 24px);
+      }
+  
+      .swatch-hex {
+        font-size: clamp(16px, 4vw, 20px);
+      }
+  
+      .swatch-name {
+        font-size: clamp(14px, 3.5vw, 18px);
+      }
+    }
+    
+    /* Added styles for ultra-small devices */
+    @media (max-width: 380px) {
+      .card {
+        padding: 12px;
+        margin: 4px;
+      }
+  
+      .swatch {
+        min-height: 160px;
+      }
+  
+      .match {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+  
+      .match .dot {
+        width: 100%;
+        height: 40px;
+      }
+  
+      .match-actions {
+        width: 100%;
+        flex-direction: row;
+      }
+  
+      .match-info {
+        width: 100%;
+        margin: 0;
+      }
+    }
+    
+    /* Added support for larger screens */
+    @media (min-width: 1600px) {
+      .card {
+        max-width: 1400px;
+        gap: 48px;
+        padding: 48px;
+      }
+  
+      .matches {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+  
+      .swatch {
+        min-height: 320px;
+      }
+  
+      .color-name {
+        font-size: 32px;
+      }
+    }
+  
+    /* Add smooth transitions */
+    .card, .swatch, .match, .btn, .input-row, .color-picker-wrapper {
+      transition: all 0.3s ease-in-out;
+    }
+  
+    /* Improve touch targets on mobile */
+    @media (hover: none) and (pointer: coarse) {
+      .btn, .match-btn {
+        min-height: 44px;
+      }
+  
+      .color-picker {
+        min-width: 44px;
+        min-height: 44px;
+      }
+  
+      .match {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <header class="header">
+      <a href="/" class="header-logo">ChromaScope</a>
+      <nav class="header-nav">
+        <a href="https://debojeet-bhowmick.netlify.app/#about" target="_blank">About</a>
+        <a href="https://github.com/D3b0j33t" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      </nav>
+    </header>
+    
+    <main>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="card">
+    <div class="left">
+      <div class="swatch" id="swatch">
+        <div class="swatch-content">
+          <div class="swatch-hex" id="swatchHex">#40E0D0</div>
+          <div class="swatch-name" id="swatchName">Turquoise</div>
+        </div>
+      </div>
+      
+      <div class="input-section">
+        <div class="label">Enter Hex Color</div>
+        <div class="input-row">
+          <input id="hexInput" class="hex-input" placeholder="#40E0D0 or 40E0D0" maxlength="7" autocomplete="off" spellcheck="false" />
+          <button id="applyBtn" class="btn primary" type="button">Apply</button>
+        </div>
+      </div>
+      
+      <div class="input-section">
+        <div class="label">Or Pick a Color</div>
+        <div class="color-picker-wrapper">
+          <input type="color" id="colorPicker" class="color-picker" value="#40E0D0" title="Pick a color" />
+          <button id="copyHex" class="btn" type="button">Copy Hex</button>
+          <button id="copyName" class="btn" type="button">Copy Name</button>
+        </div>
+      </div>
+      
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="pill">Exact Match</div>
+        <div class="pill">Real-time</div>
+        <div class="pill">Glassmorphism</div>
+      </div>
+      
+      <div id="error" class="error" role="alert" aria-live="polite"></div>
+    </div>
+    
+    <div class="right">
+      <div class="title">
+        <h2>Exact Color Name</h2>
+        <div class="subtitle">Closest perceptual match</div>
+      </div>
+      
+      <div class="name-plate" id="namePlate">
+        <div style="flex:1;">
+          <div class="color-name" id="primaryName">Turquoise</div>
+          <div class="color-hex-display" id="secondaryHex">#40E0D0</div>
+        </div>
+        <div class="meta-list">
+          <div class="pill" id="distancePill">Distance: 0</div>
+        </div>
+      </div>
+      
+      <div>
+        <div class="section-header">Alternative Names</div>
+        <div class="small muted-note">Other close matches from different color databases</div>
+        <div class="matches" id="matches"></div>
+      </div>
+      
+      <div class="muted-note">
+        Color names are matched using perceptual distance from multiple naming databases including HTML, NTC, and Pantone-like lists.
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/color-namer@1.4.0/lib/color-namer.min.js"></script>
+  <script>
+    (function() {
+      'use strict';
+      
+      const colorDatabase = {
+        // === BASIC COLORS ===
+        '#000000': 'Black', '#FFFFFF': 'White', '#FF0000': 'Red', '#00FF00': 'Lime',
+        '#0000FF': 'Blue', '#FFFF00': 'Yellow', '#00FFFF': 'Cyan', '#FF00FF': 'Magenta',
+        '#C0C0C0': 'Silver', '#808080': 'Gray', '#800000': 'Maroon', '#808000': 'Olive',
+        '#008000': 'Green', '#800080': 'Purple', '#008080': 'Teal', '#000080': 'Navy',
+
+        // === BASIC COLORS (EXTENDED) ===
+        '#000000': 'Black', '#FFFFFF': 'White', '#FF0000': 'Red', '#00FF00': 'Lime',
+        '#0000FF': 'Blue', '#FFFF00': 'Yellow', '#00FFFF': 'Cyan', '#FF00FF': 'Magenta',
+        '#C0C0C0': 'Silver', '#808080': 'Gray', '#800000': 'Maroon', '#808000': 'Olive',
+        '#008000': 'Green', '#800080': 'Purple', '#008080': 'Teal', '#000080': 'Navy',
+
+        '#FFA500': 'Orange', '#A52A2A': 'Brown', '#FFC0CB': 'Pink', '#FFD700': 'Gold',
+        '#F5F5DC': 'Beige', '#FAEBD7': 'Antique White', '#FFE4C4': 'Bisque', '#FFEBCD': 'Blanched Almond',
+        '#8B0000': 'Dark Red', '#B22222': 'Firebrick', '#DC143C': 'Crimson', '#CD5C5C': 'Indian Red',
+        '#E9967A': 'Dark Salmon', '#FA8072': 'Salmon', '#FFA07A': 'Light Salmon', '#FF7F50': 'Coral',
+        '#FF4500': 'Orange Red', '#FF6347': 'Tomato', '#FF8C00': 'Dark Orange', '#FFDAB9': 'Peach Puff',
+        '#FFEFD5': 'Papaya Whip', '#FFF0F5': 'Lavender Blush', '#FFF5EE': 'Seashell', '#FDF5E6': 'Old Lace',
+        '#FFF8DC': 'Cornsilk', '#FFFACD': 'Lemon Chiffon', '#FAFAD2': 'Light Goldenrod Yellow', '#FFFFE0': 'Light Yellow',
+        '#FFFFF0': 'Ivory', '#F0E68C': 'Khaki', '#EEE8AA': 'Pale Goldenrod', '#DAA520': 'Goldenrod',
+        '#B8860B': 'Dark Goldenrod', '#D2691E': 'Chocolate', '#A0522D': 'Sienna', '#8B4513': 'Saddle Brown',
+        '#DEB887': 'Burly Wood', '#D2B48C': 'Tan', '#BC8F8F': 'Rosy Brown', '#F4A460': 'Sandy Brown',
+        '#2E8B57': 'Sea Green', '#3CB371': 'Medium Sea Green', '#20B2AA': 'Light Sea Green', '#66CDAA': 'Medium Aquamarine',
+        '#8FBC8F': 'Dark Sea Green', '#32CD32': 'Lime Green', '#00FF7F': 'Spring Green', '#7FFF00': 'Chartreuse',
+        '#00FA9A': 'Medium Spring Green', '#ADFF2F': 'Green Yellow', '#9ACD32': 'Yellow Green', '#006400': 'Dark Green',
+        '#228B22': 'Forest Green', '#2E8B57': 'Sea Green', '#556B2F': 'Dark Olive Green', '#6B8E23': 'Olive Drab',
+        '#66CDAA': 'Aquamarine', '#00CED1': 'Dark Turquoise', '#48D1CC': 'Medium Turquoise', '#40E0D0': 'Turquoise',
+        '#20B2AA': 'Light Sea Green', '#5F9EA0': 'Cadet Blue', '#4682B4': 'Steel Blue', '#B0C4DE': 'Light Steel Blue',
+        '#ADD8E6': 'Light Blue', '#87CEEB': 'Sky Blue', '#87CEFA': 'Light Sky Blue', '#00BFFF': 'Deep Sky Blue',
+        '#1E90FF': 'Dodger Blue', '#6495ED': 'Cornflower Blue', '#4169E1': 'Royal Blue', '#0000CD': 'Medium Blue',
+        '#00008B': 'Dark Blue', '#191970': 'Midnight Blue', '#6A5ACD': 'Slate Blue', '#7B68EE': 'Medium Slate Blue',
+        '#9370DB': 'Medium Purple', '#8A2BE2': 'Blue Violet', '#9400D3': 'Dark Violet', '#9932CC': 'Dark Orchid',
+        '#BA55D3': 'Medium Orchid', '#DDA0DD': 'Plum', '#EE82EE': 'Violet', '#DA70D6': 'Orchid',
+        '#FF00FF': 'Fuchsia', '#C71585': 'Medium Violet Red', '#DB7093': 'Pale Violet Red', '#FF1493': 'Deep Pink',
+        '#FF69B4': 'Hot Pink', '#FFB6C1': 'Light Pink', '#E6E6FA': 'Lavender', '#D8BFD8': 'Thistle',
+        '#F08080': 'Light Coral', '#FAEBD7': 'Antique White', '#F0FFF0': 'Honeydew', '#F5FFFA': 'Mint Cream',
+        '#F0FFFF': 'Azure', '#F8F8FF': 'Ghost White', '#F5F5F5': 'White Smoke', '#FFF5EE': 'Seashell',
+        '#FDF5E6': 'Old Lace', '#FFFAF0': 'Floral White', '#FFFFF0': 'Ivory', '#FAF0E6': 'Linen',
+        '#FFF0F5': 'Lavender Blush', '#FFE4E1': 'Misty Rose', '#FFE4B5': 'Moccasin', '#FFF8DC': 'Cornsilk',
+        '#FFEBCD': 'Blanched Almond', '#FFFACD': 'Lemon Chiffon', '#FAFAD2': 'Light Goldenrod Yellow', '#FAEBD7': 'Antique White',
+        '#FFD700': 'Gold', '#EEDD82': 'Light Goldenrod', '#EEE8AA': 'Pale Goldenrod', '#DAA520': 'Goldenrod',
+        '#B8860B': 'Dark Goldenrod', '#CD853F': 'Peru', '#DEB887': 'Burly Wood', '#D2B48C': 'Tan',
+        '#BC8F8F': 'Rosy Brown', '#F4A460': 'Sandy Brown', '#A0522D': 'Sienna', '#8B4513': 'Saddle Brown',
+        '#D2691E': 'Chocolate', '#FF7F50': 'Coral', '#FF6347': 'Tomato', '#FF4500': 'Orange Red', '#DC143C': 'Crimson',
+        '#B22222': 'Firebrick', '#8B0000': 'Dark Red', '#800000': 'Maroon', '#A52A2A': 'Brown',
+        '#8B4513': 'Saddle Brown', '#2F4F4F': 'Dark Slate Gray', '#696969': 'Dim Gray', '#708090': 'Slate Gray',
+        '#778899': 'Light Slate Gray', '#B0C4DE': 'Light Steel Blue', '#C0C0C0': 'Silver', '#D3D3D3': 'Light Gray',
+        '#A9A9A9': 'Dark Gray', '#FFFFFF': 'White', '#F8F8FF': 'Ghost White', '#F5F5F5': 'White Smoke',
+
+
+        // === EXTENDED COLORS ===
+        '#FFA500': 'Orange', '#FFC0CB': 'Pink', '#A52A2A': 'Brown', '#FFD700': 'Gold',
+        '#40E0D0': 'Turquoise', '#EE82EE': 'Violet', '#4B0082': 'Indigo', '#F0E68C': 'Khaki',
+        '#E6E6FA': 'Lavender', '#FFDEAD': 'Navajo White', '#FF6347': 'Tomato', '#4682B4': 'Steel Blue',
+        '#D2691E': 'Chocolate', '#FF7F50': 'Coral', '#6495ED': 'Cornflower Blue', '#DC143C': 'Crimson',
+        '#00008B': 'Dark Blue', '#008B8B': 'Dark Cyan', '#B8860B': 'Dark Goldenrod', '#A9A9A9': 'Dark Gray',
+        '#006400': 'Dark Green', '#BDB76B': 'Dark Khaki', '#8B008B': 'Dark Magenta', '#556B2F': 'Dark Olive Green',
+        '#FF8C00': 'Dark Orange', '#9932CC': 'Dark Orchid', '#8B0000': 'Dark Red', '#E9967A': 'Dark Salmon',
+        '#8FBC8F': 'Dark Sea Green', '#483D8B': 'Dark Slate Blue', '#2F4F4F': 'Dark Slate Gray',
+        '#00CED1': 'Dark Turquoise', '#9400D3': 'Dark Violet', '#FF1493': 'Deep Pink', '#00BFFF': 'Deep Sky Blue',
+        '#696969': 'Dim Gray', '#1E90FF': 'Dodger Blue', '#B22222': 'Fire Brick', '#FFFAF0': 'Floral White',
+        '#228B22': 'Forest Green', '#DCDCDC': 'Gainsboro', '#F8F8FF': 'Ghost White', '#DAA520': 'Goldenrod',
+        '#ADFF2F': 'Green Yellow', '#F0FFF0': 'Honeydew', '#FF69B4': 'Hot Pink', '#CD5C5C': 'Indian Red',
+        '#FFFFF0': 'Ivory', '#E0FFFF': 'Light Cyan', '#FAFAD2': 'Light Goldenrod', '#90EE90': 'Light Green',
+        '#D3D3D3': 'Light Gray', '#FFB6C1': 'Light Pink', '#FFA07A': 'Light Salmon', '#20B2AA': 'Light Sea Green',
+        '#87CEFA': 'Light Sky Blue', '#778899': 'Light Slate Gray', '#B0C4DE': 'Light Steel Blue',
+        '#FFFFE0': 'Light Yellow', '#32CD32': 'Lime Green', '#FAF0E6': 'Linen', '#FF00FF': 'Fuchsia',
+        '#66CDAA': 'Medium Aquamarine', '#0000CD': 'Medium Blue', '#BA55D3': 'Medium Orchid',
+        '#9370DB': 'Medium Purple', '#3CB371': 'Medium Sea Green', '#7B68EE': 'Medium Slate Blue',
+        '#00FA9A': 'Medium Spring Green', '#48D1CC': 'Medium Turquoise', '#C71585': 'Medium Violet Red',
+        '#191970': 'Midnight Blue', '#F5FFFA': 'Mint Cream', '#FFE4E1': 'Misty Rose', '#FFE4B5': 'Moccasin',
+        '#FDF5E6': 'Old Lace', '#6B8E23': 'Olive Drab', '#FF4500': 'Orange Red', '#DA70D6': 'Orchid',
+        '#EEE8AA': 'Pale Goldenrod', '#98FB98': 'Pale Green', '#AFEEEE': 'Pale Turquoise', '#DB7093': 'Pale Violet Red',
+        '#FFEFD5': 'Papaya Whip', '#FFDAB9': 'Peach Puff', '#CD853F': 'Peru', '#DDA0DD': 'Plum',
+        '#B0E0E6': 'Powder Blue', '#BC8F8F': 'Rosy Brown', '#4169E1': 'Royal Blue', '#8B4513': 'Saddle Brown',
+        '#FA8072': 'Salmon', '#F4A460': 'Sandy Brown', '#2E8B57': 'Sea Green', '#FFF5EE': 'Seashell',
+        '#A0522D': 'Sienna', '#87CEEB': 'Sky Blue', '#6A5ACD': 'Slate Blue', '#708090': 'Slate Gray',
+        '#FFFAFA': 'Snow', '#00FF7F': 'Spring Green', '#D2B48C': 'Tan', '#D8BFD8': 'Thistle',
+        '#40E0D0': 'Turquoise', '#F5DEB3': 'Wheat', '#F5F5F5': 'White Smoke', '#9ACD32': 'Yellow Green',
+
+        // === MATERIAL COLORS ===
+        '#F44336': 'Material Red', '#E91E63': 'Material Pink', '#9C27B0': 'Material Purple',
+        '#673AB7': 'Material Deep Purple', '#3F51B5': 'Material Indigo', '#2196F3': 'Material Blue',
+        '#03A9F4': 'Material Light Blue', '#00BCD4': 'Material Cyan', '#009688': 'Material Teal',
+        '#4CAF50': 'Material Green', '#8BC34A': 'Material Light Green', '#CDDC39': 'Material Lime',
+        '#FFEB3B': 'Material Yellow', '#FFC107': 'Material Amber', '#FF9800': 'Material Orange',
+        '#FF5722': 'Material Deep Orange', '#795548': 'Material Brown', '#9E9E9E': 'Material Gray',
+        '#607D8B': 'Material Blue Gray',
+
+        // === EXTENDED TAILWIND SHADES ===
+        '#F8FAFC': 'Slate-50', '#F1F5F9': 'Slate-100', '#E2E8F0': 'Slate-200', '#CBD5E1': 'Slate-300',
+        '#94A3B8': 'Slate-400', '#64748B': 'Slate-500', '#475569': 'Slate-600', '#334155': 'Slate-700',
+        '#1E293B': 'Slate-800', '#0F172A': 'Slate-900',
+        '#EFF6FF': 'Blue-50', '#DBEAFE': 'Blue-100', '#BFDBFE': 'Blue-200', '#93C5FD': 'Blue-300',
+        '#60A5FA': 'Blue-400', '#3B82F6': 'Blue-500', '#2563EB': 'Blue-600', '#1D4ED8': 'Blue-700',
+        '#1E40AF': 'Blue-800', '#1E3A8A': 'Blue-900',
+        '#ECFDF5': 'Emerald-50', '#D1FAE5': 'Emerald-100', '#A7F3D0': 'Emerald-200', '#6EE7B7': 'Emerald-300',
+        '#34D399': 'Emerald-400', '#10B981': 'Emerald-500', '#059669': 'Emerald-600', '#047857': 'Emerald-700',
+        '#065F46': 'Emerald-800', '#064E3B': 'Emerald-900',
+        '#FEF2F2': 'Rose-50', '#FEE2E2': 'Rose-100', '#FECACA': 'Rose-200', '#FCA5A5': 'Rose-300',
+        '#F87171': 'Rose-400', '#EF4444': 'Rose-500', '#DC2626': 'Rose-600', '#B91C1C': 'Rose-700',
+        '#991B1B': 'Rose-800', '#7F1D1D': 'Rose-900',
+        '#FFF7ED': 'Amber-50', '#FFEDD5': 'Amber-100', '#FED7AA': 'Amber-200', '#FDBA74': 'Amber-300',
+        '#FB923C': 'Amber-400', '#F97316': 'Amber-500', '#EA580C': 'Amber-600', '#C2410C': 'Amber-700',
+        '#9A3412': 'Amber-800', '#7C2D12': 'Amber-900',
+
+        // === PANTONE COLORS ===
+        '#5F4B8B': 'Ultra Violet', '#88B04B': 'Greenery', '#FF6F61': 'Living Coral', '#0F4C81': 'Classic Blue',
+        '#F5DF4D': 'Illuminating Yellow', '#939597': 'Ultimate Gray', '#6667AB': 'Very Peri', '#BE3455': 'Viva Magenta',
+        '#E2583E': 'Flame', '#009473': 'Emerald', '#B565A7': 'Purple Rose', '#D65076': 'Radiant Orchid',
+        '#955251': 'Marsala', '#F7CAC9': 'Rose Quartz', '#92A8D1': 'Serenity',
+
+        // === CRAYOLA COLORS ===
+        '#9F8170': 'Beaver', '#FD7C6E': 'Bittersweet', '#1F75FE': 'Blue Crayola', '#A2A2D0': 'Blue Bell',
+        '#6699CC': 'Blue Gray', '#0D98BA': 'Blue Green Crayola', '#7366BD': 'Blue Violet Crayola',
+        '#DE5D83': 'Blush', '#CD7F32': 'Bronze Crayola', '#C62D42': 'Brick Red Crayola',
+        '#5D76CB': 'Cobalt Blue Crayola', '#1DACD6': 'Cerulean Crayola', '#2D383A': 'Outer Space',
+        '#FFBCD9': 'Cotton Candy Crayola', '#FBE7B2': 'Banana Mania', '#F0E891': 'Spring Green Crayola',
+        '#8A795D': 'Shadow', '#76D7EA': 'Sky Blue Crayola', '#FC6C85': 'Tickle Me Pink', '#FFCFAB': 'Peach Crayola',
+        '#EF98AA': 'Mauvelous', '#E97451': 'Burnt Sienna', '#FAA76C': 'Atomic Tangerine', '#1CAC78': 'Crayola Green',
+        '#77DDE7': 'Sea Green Crayola', '#C32148': 'Maroon Crayola', '#B4674D': 'Chestnut', '#9ACEEB': 'Baby Blue',
+        '#C364C5': 'Fuchsia Crayola', '#D68A59': 'Copper Crayola', '#C8385A': 'Mulberry', '#FF6E4A': 'Outrageous Orange',
+
+        // === EARTHY AND NATURAL ===
+        '#C2B280': 'Sand', '#F4C430': 'Saffron', '#A67B5B': 'Cafe au Lait', '#8B4513': 'Bark Brown',
+        '#9C661F': 'Cinnamon', '#C19A6B': 'Camel', '#EEDC82': 'Flax', '#FAD6A5': 'Beige Sand',
+        '#FFDB58': 'Mustard', '#556B2F': 'Moss Green', '#6B8E23': 'Olive Drab', '#708238': 'Fern Green',
+        '#8A9A5B': 'Asparagus', '#B2BEB5': 'Gray Green', '#E4D96F': 'Straw', '#FFCC33': 'Honey Yellow',
+        '#FFDAB9': 'Peach Puff', '#CD853F': 'Golden Brown',
+
+        // === MODERN UI NEUTRALS ===
+        '#ECECEC': 'Cool White', '#E0E0E0': 'Cloud Gray', '#DADADA': 'Soft Pewter', '#BEBEBE': 'Neutral Gray',
+        '#A9A9A9': 'Dim Neutral', '#707070': 'Dark Neutral', '#4B4B4B': 'Deep Charcoal', '#2B2B2B': 'Night Gray',
+        '#121212': 'Pure Black', '#FAFAFA': 'Paper White', '#EAEAEA': 'Smoke White',
+
+        // === EXTENDED CSS COLORS ===
+        '#FFA500': 'Orange', '#FFC0CB': 'Pink', '#A52A2A': 'Brown', '#FFD700': 'Gold',
+        '#40E0D0': 'Turquoise', '#EE82EE': 'Violet', '#4B0082': 'Indigo', '#F0E68C': 'Khaki',
+        '#E6E6FA': 'Lavender', '#FFDEAD': 'Navajo White', '#FF6347': 'Tomato', '#4682B4': 'Steel Blue',
+        '#D2691E': 'Chocolate', '#FF7F50': 'Coral', '#6495ED': 'Cornflower Blue', '#DC143C': 'Crimson',
+        '#00008B': 'Dark Blue', '#008B8B': 'Dark Cyan', '#B8860B': 'Dark Goldenrod', '#A9A9A9': 'Dark Gray',
+        '#006400': 'Dark Green', '#BDB76B': 'Dark Khaki', '#8B008B': 'Dark Magenta', '#556B2F': 'Dark Olive Green',
+        '#FF8C00': 'Dark Orange', '#9932CC': 'Dark Orchid', '#8B0000': 'Dark Red', '#E9967A': 'Dark Salmon',
+        '#8FBC8F': 'Dark Sea Green', '#483D8B': 'Dark Slate Blue', '#2F4F4F': 'Dark Slate Gray',
+        '#00CED1': 'Dark Turquoise', '#9400D3': 'Dark Violet', '#FF1493': 'Deep Pink', '#00BFFF': 'Deep Sky Blue',
+        '#696969': 'Dim Gray', '#1E90FF': 'Dodger Blue', '#B22222': 'Fire Brick', '#FFFAF0': 'Floral White',
+        '#228B22': 'Forest Green', '#DCDCDC': 'Gainsboro', '#F8F8FF': 'Ghost White', '#DAA520': 'Goldenrod',
+        '#ADFF2F': 'Green Yellow', '#F0FFF0': 'Honeydew', '#FF69B4': 'Hot Pink', '#CD5C5C': 'Indian Red',
+        '#FFFFF0': 'Ivory', '#E0FFFF': 'Light Cyan', '#FAFAD2': 'Light Goldenrod', '#90EE90': 'Light Green',
+        '#D3D3D3': 'Light Gray', '#FFB6C1': 'Light Pink', '#FFA07A': 'Light Salmon', '#20B2AA': 'Light Sea Green',
+        '#87CEFA': 'Light Sky Blue', '#778899': 'Light Slate Gray', '#B0C4DE': 'Light Steel Blue',
+        '#FFFFE0': 'Light Yellow', '#32CD32': 'Lime Green', '#FAF0E6': 'Linen', '#FF00FF': 'Fuchsia',
+        '#66CDAA': 'Medium Aquamarine', '#0000CD': 'Medium Blue', '#BA55D3': 'Medium Orchid',
+        '#9370DB': 'Medium Purple', '#3CB371': 'Medium Sea Green', '#7B68EE': 'Medium Slate Blue',
+        '#00FA9A': 'Medium Spring Green', '#48D1CC': 'Medium Turquoise', '#C71585': 'Medium Violet Red',
+        '#191970': 'Midnight Blue', '#F5FFFA': 'Mint Cream', '#FFE4E1': 'Misty Rose', '#FFE4B5': 'Moccasin',
+        '#FDF5E6': 'Old Lace', '#6B8E23': 'Olive Drab', '#FF4500': 'Orange Red', '#DA70D6': 'Orchid',
+        '#EEE8AA': 'Pale Goldenrod', '#98FB98': 'Pale Green', '#AFEEEE': 'Pale Turquoise', '#DB7093': 'Pale Violet Red',
+        '#FFEFD5': 'Papaya Whip', '#FFDAB9': 'Peach Puff', '#CD853F': 'Peru', '#DDA0DD': 'Plum',
+        '#B0E0E6': 'Powder Blue', '#BC8F8F': 'Rosy Brown', '#4169E1': 'Royal Blue', '#8B4513': 'Saddle Brown',
+        '#FA8072': 'Salmon', '#F4A460': 'Sandy Brown', '#2E8B57': 'Sea Green', '#FFF5EE': 'Seashell',
+        '#A0522D': 'Sienna', '#87CEEB': 'Sky Blue', '#6A5ACD': 'Slate Blue', '#708090': 'Slate Gray',
+        '#FFFAFA': 'Snow', '#00FF7F': 'Spring Green', '#D2B48C': 'Tan', '#D8BFD8': 'Thistle',
+        '#40E0D0': 'Turquoise', '#F5DEB3': 'Wheat', '#F5F5F5': 'White Smoke', '#9ACD32': 'Yellow Green',
+
+        // === MATERIAL DESIGN COLORS ===
+        '#F44336': 'Material Red', '#E91E63': 'Material Pink', '#9C27B0': 'Material Purple',
+        '#673AB7': 'Material Deep Purple', '#3F51B5': 'Material Indigo', '#2196F3': 'Material Blue',
+        '#03A9F4': 'Material Light Blue', '#00BCD4': 'Material Cyan', '#009688': 'Material Teal',
+        '#4CAF50': 'Material Green', '#8BC34A': 'Material Light Green', '#CDDC39': 'Material Lime',
+        '#FFEB3B': 'Material Yellow', '#FFC107': 'Material Amber', '#FF9800': 'Material Orange',
+        '#FF5722': 'Material Deep Orange', '#795548': 'Material Brown', '#9E9E9E': 'Material Gray',
+        '#607D8B': 'Material Blue Gray',
+
+        // === TAILWIND EXTENDED SHADES ===
+        '#F8FAFC': 'Slate-50', '#F1F5F9': 'Slate-100', '#E2E8F0': 'Slate-200', '#CBD5E1': 'Slate-300',
+        '#94A3B8': 'Slate-400', '#64748B': 'Slate-500', '#475569': 'Slate-600', '#334155': 'Slate-700',
+        '#1E293B': 'Slate-800', '#0F172A': 'Slate-900',
+
+        '#EFF6FF': 'Blue-50', '#DBEAFE': 'Blue-100', '#BFDBFE': 'Blue-200', '#93C5FD': 'Blue-300',
+        '#60A5FA': 'Blue-400', '#3B82F6': 'Blue-500', '#2563EB': 'Blue-600', '#1D4ED8': 'Blue-700',
+        '#1E40AF': 'Blue-800', '#1E3A8A': 'Blue-900',
+
+        '#ECFDF5': 'Emerald-50', '#D1FAE5': 'Emerald-100', '#A7F3D0': 'Emerald-200', '#6EE7B7': 'Emerald-300',
+        '#34D399': 'Emerald-400', '#10B981': 'Emerald-500', '#059669': 'Emerald-600', '#047857': 'Emerald-700',
+        '#065F46': 'Emerald-800', '#064E3B': 'Emerald-900',
+
+        '#FEF2F2': 'Rose-50', '#FEE2E2': 'Rose-100', '#FECACA': 'Rose-200', '#FCA5A5': 'Rose-300',
+        '#F87171': 'Rose-400', '#EF4444': 'Rose-500', '#DC2626': 'Rose-600', '#B91C1C': 'Rose-700',
+        '#991B1B': 'Rose-800', '#7F1D1D': 'Rose-900',
+
+        '#FFF7ED': 'Amber-50', '#FFEDD5': 'Amber-100', '#FED7AA': 'Amber-200', '#FDBA74': 'Amber-300',
+        '#FB923C': 'Amber-400', '#F97316': 'Amber-500', '#EA580C': 'Amber-600', '#C2410C': 'Amber-700',
+        '#9A3412': 'Amber-800', '#7C2D12': 'Amber-900',
+
+        '#FAF5FF': 'Violet-50', '#F3E8FF': 'Violet-100', '#E9D5FF': 'Violet-200', '#D8B4FE': 'Violet-300',
+        '#C084FC': 'Violet-400', '#A855F7': 'Violet-500', '#9333EA': 'Violet-600', '#7E22CE': 'Violet-700',
+        '#6B21A8': 'Violet-800', '#581C87': 'Violet-900',
+
+        // === MATERIAL ACCENT COLORS ===
+        '#FF8A80': 'Red-A100', '#FF5252': 'Red-A200', '#FF1744': 'Red-A400', '#D50000': 'Red-A700',
+        '#EA80FC': 'Purple-A100', '#E040FB': 'Purple-A200', '#D500F9': 'Purple-A400', '#AA00FF': 'Purple-A700',
+        '#8C9EFF': 'Indigo-A100', '#536DFE': 'Indigo-A200', '#3D5AFE': 'Indigo-A400', '#304FFE': 'Indigo-A700',
+        '#80D8FF': 'Light Blue-A100', '#40C4FF': 'Light Blue-A200', '#00B0FF': 'Light Blue-A400', '#0091EA': 'Light Blue-A700',
+        '#84FFFF': 'Cyan-A100', '#18FFFF': 'Cyan-A200', '#00E5FF': 'Cyan-A400', '#00B8D4': 'Cyan-A700',
+        '#B9F6CA': 'Green-A100', '#69F0AE': 'Green-A200', '#00E676': 'Green-A400', '#00C853': 'Green-A700',
+        '#FFFF8D': 'Yellow-A100', '#FFFF00': 'Yellow-A200', '#FFEA00': 'Yellow-A400', '#FFD600': 'Yellow-A700',
+        '#FFD180': 'Orange-A100', '#FFAB40': 'Orange-A200', '#FF9100': 'Orange-A400', '#FF6D00': 'Orange-A700',
+
+        // === CRAYOLA EXTENDED COLORS ===
+        '#9F8170': 'Beaver', '#FD7C6E': 'Bittersweet', '#1F75FE': 'Blue Crayola', '#A2A2D0': 'Blue Bell',
+        '#6699CC': 'Blue Gray', '#0D98BA': 'Blue Green Crayola', '#7366BD': 'Blue Violet Crayola',
+        '#DE5D83': 'Blush', '#CD7F32': 'Bronze Crayola', '#C62D42': 'Brick Red Crayola',
+        '#5D76CB': 'Cobalt Blue Crayola', '#1DACD6': 'Cerulean Crayola', '#2D383A': 'Outer Space',
+        '#FFBCD9': 'Cotton Candy Crayola', '#FBE7B2': 'Banana Crayola', '#F0E891': 'Spring Green Crayola',
+        '#8A795D': 'Shadow', '#76D7EA': 'Sky Blue Crayola', '#FC6C85': 'Tickle Me Pink', '#FFCFAB': 'Peach Crayola',
+        '#EF98AA': 'Mauvelous', '#E97451': 'Burnt Sienna', '#FAA76C': 'Atomic Tangerine', '#1CAC78': 'Crayola Green',
+        '#77DDE7': 'Sea Green Crayola', '#C32148': 'Maroon Crayola', '#B4674D': 'Chestnut', '#9ACEEB': 'Baby Blue',
+        '#C364C5': 'Fuchsia Crayola', '#D68A59': 'Copper Crayola', '#C8385A': 'Mulberry', '#FF6E4A': 'Outrageous Orange',
+
+        // === NATURAL EARTH & PLANT COLORS ===
+        '#C2B280': 'Sand', '#F4C430': 'Saffron', '#A67B5B': 'Café au Lait', '#8B4513': 'Bark Brown',
+        '#9C661F': 'Cinnamon', '#C19A6B': 'Camel Tan', '#EEDC82': 'Flax', '#FAD6A5': 'Beige Sand',
+        '#FFDB58': 'Mustard', '#556B2F': 'Moss Green', '#6B8E23': 'Olive Drab', '#708238': 'Fern Green',
+        '#8A9A5B': 'Asparagus', '#B2BEB5': 'Gray Green', '#C2B280': 'Khaki Sand', '#E4D96F': 'Straw',
+        '#FFCC33': 'Honey Yellow', '#FFDAB9': 'Peach Puff', '#CD853F': 'Golden Brown',
+
+        // === PANTONE & MODERN DESIGN SHADES ===
+        '#5F4B8B': 'Ultra Violet', '#88B04B': 'Greenery', '#FF6F61': 'Living Coral', '#0F4C81': 'Classic Blue',
+        '#F5DF4D': 'Illuminating Yellow', '#939597': 'Ultimate Gray', '#6667AB': 'Very Peri', '#BE3455': 'Viva Magenta',
+        '#E2583E': 'Flame Pantone', '#009473': 'Emerald Pantone', '#B565A7': 'Purple Rose', '#D65076': 'Radiant Orchid',
+        '#955251': 'Marsala', '#F7CAC9': 'Rose Quartz', '#92A8D1': 'Serenity',
+
+        // === MODERN UI NEUTRALS ===
+        '#ECECEC': 'Cool White', '#E0E0E0': 'Cloud Gray', '#DADADA': 'Soft Pewter', '#BEBEBE': 'Neutral Gray',
+        '#A9A9A9': 'Dim Neutral', '#707070': 'Dark Neutral', '#4B4B4B': 'Deep Charcoal', '#2B2B2B': 'Night Gray',
+        '#121212': 'Pure Black', '#FAFAFA': 'Paper White', '#EAEAEA': 'Smoke White',
+        '#C0C0C0': 'Silver Gray', '#808080': 'Medium Gray', '#404040': 'Graphite',
+
+        // === BRAND COLORS (Official Hex Codes) ===
+        '#1DA1F2': 'Twitter Blue', '#1877F2': 'Facebook Blue', '#E1306C': 'Instagram Pink',
+        '#FF0000': 'YouTube Red', '#FF9900': 'Amazon Orange', '#7289DA': 'Discord Blurple',
+        '#5865F2': 'Discord New Blurple', '#0A66C2': 'LinkedIn Blue', '#25D366': 'WhatsApp Green',
+        '#1DB954': 'Spotify Green', '#F48024': 'Stack Overflow Orange', '#FF5700': 'Reddit Orange',
+        '#00AFF0': 'Skype Blue', '#9146FF': 'Twitch Purple', '#EA4335': 'Google Red',
+        '#4285F4': 'Google Blue', '#FBBC05': 'Google Yellow', '#34A853': 'Google Green',
+        '#FF4500': 'Firefox Orange', '#4B0082': 'Indigo (W3C)',
+
+        // === FLAT UI COLORS ===
+        '#2ECC71': 'Emerald', '#3498DB': 'Peter River', '#9B59B6': 'Amethyst',
+        '#34495E': 'Wet Asphalt', '#16A085': 'Green Sea', '#27AE60': 'Nephritis',
+        '#2980B9': 'Belize Hole', '#8E44AD': 'Wisteria', '#2C3E50': 'Midnight',
+        '#F1C40F': 'Sun Flower', '#E67E22': 'Carrot', '#E74C3C': 'Alizarin',
+        '#ECF0F1': 'Clouds', '#95A5A6': 'Concrete', '#F39C12': 'Orange Flat',
+        '#D35400': 'Pumpkin', '#C0392B': 'Pomegranate', '#BDC3C7': 'Silver Flat',
+        '#7F8C8D': 'Asbestos', '#34495E': 'Wet Asphalt',
+
+        // === CRAYOLA COLORS (Common Approximations) ===
+        '#ED0A3F': 'Crayola Red', '#FF7538': 'Crayola Orange', '#FFA343': 'Crayola Yellow Orange',
+        '#1CAC78': 'Crayola Green', '#1CD3A2': 'Crayola Sea Green', '#0D98BA': 'Crayola Blue Green',
+        '#FF43A4': 'Crayola Pink', '#7366BD': 'Crayola Blue Violet', '#EE34D2': 'Crayola Violet Red',
+        '#FFD12A': 'Crayola Dandelion', '#FAE7B5': 'Crayola Banana Mania', '#C5E384': 'Crayola Yellow Green',
+        '#C62D42': 'Crayola Brick Red', '#2D383A': 'Crayola Outer Space', '#62A1D0': 'Crayola Cerulean',
+        '#FFBCD9': 'Crayola Cotton Candy', '#FF6E4A': 'Crayola Outrageous Orange', '#FDDDE6': 'Crayola Piggy Pink',
+
+        // === PANTONE-INSPIRED (Approximate Web Equivalents) ===
+        '#FF6F61': 'Pantone Living Coral', '#5F4B8B': 'Pantone Ultra Violet',
+        '#88B04B': 'Pantone Greenery', '#F7CAC9': 'Pantone Rose Quartz', '#92A8D1': 'Pantone Serenity',
+        '#D65076': 'Pantone Radiant Orchid', '#009473': 'Pantone Emerald', '#DD4124': 'Pantone Tangerine Tango',
+        '#E2583E': 'Pantone Flame', '#B565A7': 'Pantone Purple Rose',
+
+        // === EXTRA NEUTRALS AND MODERN UI COLORS ===
+        '#121212': 'Jet Black', '#181818': 'Rich Black', '#222222': 'Carbon', '#2D2D2D': 'Dark Charcoal',
+        '#F2F2F2': 'Soft Gray', '#E0E0E0': 'Light Silver', '#FAFAFA': 'Almost White',
+        '#B0BEC5': 'Cool Gray', '#90A4AE': 'Slate Gray 2', '#ECEFF1': 'Off White',
+
+        // === PASTELS ===
+        '#AEC6CF': 'Pastel Blue', '#FFB347': 'Pastel Orange', '#B39EB5': 'Pastel Purple',
+        '#FF6961': 'Pastel Red', '#77DD77': 'Pastel Green', '#CFCFC4': 'Pastel Gray',
+        '#F49AC2': 'Pastel Pink', '#CB99C9': 'Pastel Violet', '#FDFD96': 'Pastel Yellow',
+
+        // === METALLICS & SPECIAL ===
+        '#D4AF37': 'Metallic Gold', '#C0C0C0': 'Metallic Silver', '#B87333': 'Copper',
+        '#E5E4E2': 'Platinum', '#C9C0BB': 'Nickel', '#B2BEB5': 'Ash Gray',
+        '#E1C699': 'Champagne', '#A97142': 'Bronze', '#DAA520': 'Goldenrod (Metallic-Like)',
+
+
+        // === EARTHY / NATURAL TONES ===
+        '#A0522D': 'Soil Brown', '#8B4513': 'Wood Brown', '#C19A6B': 'Camel',
+        '#DEB887': 'Burly Wood', '#BC8F8F': 'Rosewood', '#D2B48C': 'Desert Sand',
+        '#F4A460': 'Sandy Brown', '#BDB76B': 'Dry Grass', '#808000': 'Moss Olive',
+        '#556B2F': 'Forest Moss', '#2E8B57': 'Deep Sea Green', '#6B8E23': 'Olive Branch', '#9ACD32': 'Spring Leaf', '#228B22': 'Pine Green',
+
+
+        // === BONUS FANTASY COLORS ===
+        '#DA70D6': 'Fairy Purple', '#20B2AA': 'Mermaid Teal', '#B0E0E6': 'Sky Mist',
+        '#FFE4E1': 'Rose Cloud', '#FFB6C1': 'Cotton Candy', '#BFEFFF': 'Baby Sky',
+        '#F08080': 'Sunset Blush', '#AFEEEE': 'Crystal Blue', '#98FB98': 'Mint Leaf',
+        '#D8BFD8': 'Lavender Mist', '#E0FFFF': 'Ice Blue', '#FFFACD': 'Lemon Chiffon',
+
+
+        // === EXTENDED COLORS ===
+        '#FFA500': 'Orange', '#FFC0CB': 'Pink', '#A52A2A': 'Brown', '#FFD700': 'Gold',
+        '#40E0D0': 'Turquoise', '#EE82EE': 'Violet', '#4B0082': 'Indigo', '#F0E68C': 'Khaki',
+        '#E6E6FA': 'Lavender', '#FFDEAD': 'Navajo White', '#FF6347': 'Tomato', '#4682B4': 'Steel Blue',
+        '#D2691E': 'Chocolate', '#FF7F50': 'Coral', '#6495ED': 'Cornflower Blue', '#DC143C': 'Crimson',
+        '#00008B': 'Dark Blue', '#008B8B': 'Dark Cyan', '#B8860B': 'Dark Goldenrod', '#A9A9A9': 'Dark Gray',
+        '#006400': 'Dark Green', '#BDB76B': 'Dark Khaki', '#8B008B': 'Dark Magenta', '#556B2F': 'Dark Olive Green',
+        '#FF8C00': 'Dark Orange', '#9932CC': 'Dark Orchid', '#8B0000': 'Dark Red', '#E9967A': 'Dark Salmon',
+        '#8FBC8F': 'Dark Sea Green', '#483D8B': 'Dark Slate Blue', '#2F4F4F': 'Dark Slate Gray',
+        '#00CED1': 'Dark Turquoise', '#9400D3': 'Dark Violet', '#FF1493': 'Deep Pink', '#00BFFF': 'Deep Sky Blue',
+        '#696969': 'Dim Gray', '#1E90FF': 'Dodger Blue', '#B22222': 'Fire Brick', '#FFFAF0': 'Floral White',
+        '#228B22': 'Forest Green', '#DCDCDC': 'Gainsboro', '#F8F8FF': 'Ghost White', '#DAA520': 'Goldenrod',
+        '#ADFF2F': 'Green Yellow', '#F0FFF0': 'Honeydew', '#FF69B4': 'Hot Pink', '#CD5C5C': 'Indian Red',
+        '#FFFFF0': 'Ivory', '#E0FFFF': 'Light Cyan', '#FAFAD2': 'Light Goldenrod', '#90EE90': 'Light Green',
+        '#D3D3D3': 'Light Gray', '#FFB6C1': 'Light Pink', '#FFA07A': 'Light Salmon', '#20B2AA': 'Light Sea Green',
+        '#87CEFA': 'Light Sky Blue', '#778899': 'Light Slate Gray', '#B0C4DE': 'Light Steel Blue',
+        '#FFFFE0': 'Light Yellow', '#32CD32': 'Lime Green', '#FAF0E6': 'Linen', '#FF00FF': 'Fuchsia',
+        '#66CDAA': 'Medium Aquamarine', '#0000CD': 'Medium Blue', '#BA55D3': 'Medium Orchid',
+        '#9370DB': 'Medium Purple', '#3CB371': 'Medium Sea Green', '#7B68EE': 'Medium Slate Blue',
+        '#00FA9A': 'Medium Spring Green', '#48D1CC': 'Medium Turquoise', '#C71585': 'Medium Violet Red',
+        '#191970': 'Midnight Blue', '#F5FFFA': 'Mint Cream', '#FFE4E1': 'Misty Rose', '#FFE4B5': 'Moccasin',
+        '#FDF5E6': 'Old Lace', '#6B8E23': 'Olive Drab', '#FF4500': 'Orange Red', '#DA70D6': 'Orchid',
+        '#EEE8AA': 'Pale Goldenrod', '#98FB98': 'Pale Green', '#AFEEEE': 'Pale Turquoise', '#DB7093': 'Pale Violet Red',
+        '#FFEFD5': 'Papaya Whip', '#FFDAB9': 'Peach Puff', '#CD853F': 'Peru', '#DDA0DD': 'Plum',
+        '#B0E0E6': 'Powder Blue', '#BC8F8F': 'Rosy Brown', '#4169E1': 'Royal Blue', '#8B4513': 'Saddle Brown',
+        '#FA8072': 'Salmon', '#F4A460': 'Sandy Brown', '#2E8B57': 'Sea Green', '#FFF5EE': 'Seashell',
+        '#A0522D': 'Sienna', '#87CEEB': 'Sky Blue', '#6A5ACD': 'Slate Blue', '#708090': 'Slate Gray',
+        '#FFFAFA': 'Snow', '#00FF7F': 'Spring Green', '#D2B48C': 'Tan', '#D8BFD8': 'Thistle',
+        '#40E0D0': 'Turquoise', '#F5DEB3': 'Wheat', '#F5F5F5': 'White Smoke', '#9ACD32': 'Yellow Green',
+
+
+        // === MATERIAL COLORS ===
+        '#F44336': 'Material Red', '#E91E63': 'Material Pink', '#9C27B0': 'Material Purple',
+        '#673AB7': 'Material Deep Purple', '#3F51B5': 'Material Indigo', '#2196F3': 'Material Blue',
+        '#03A9F4': 'Material Light Blue', '#00BCD4': 'Material Cyan', '#009688': 'Material Teal',
+        '#4CAF50': 'Material Green', '#8BC34A': 'Material Light Green', '#CDDC39': 'Material Lime',
+        '#FFEB3B': 'Material Yellow', '#FFC107': 'Material Amber', '#FF9800': 'Material Orange',
+        '#FF5722': 'Material Deep Orange', '#795548': 'Material Brown', '#9E9E9E': 'Material Gray',
+        '#607D8B': 'Material Blue Gray', 
+
+        // === EXTENDED TAILWIND SHADES ===
+        '#F8FAFC': 'Slate-50', '#F1F5F9': 'Slate-100', '#E2E8F0': 'Slate-200', '#CBD5E1': 'Slate-300',
+        '#94A3B8': 'Slate-400', '#64748B': 'Slate-500', '#475569': 'Slate-600', '#334155': 'Slate-700',
+        '#1E293B': 'Slate-800', '#0F172A': 'Slate-900',
+        '#EFF6FF': 'Blue-50', '#DBEAFE': 'Blue-100', '#BFDBFE': 'Blue-200', '#93C5FD': 'Blue-300',
+        '#60A5FA': 'Blue-400', '#3B82F6': 'Blue-500', '#2563EB': 'Blue-600', '#1D4ED8': 'Blue-700',
+        '#1E40AF': 'Blue-800', '#1E3A8A': 'Blue-900',
+        '#ECFDF5': 'Emerald-50', '#D1FAE5': 'Emerald-100', '#A7F3D0': 'Emerald-200', '#6EE7B7': 'Emerald-300',
+        '#34D399': 'Emerald-400', '#10B981': 'Emerald-500', '#059669': 'Emerald-600', '#047857': 'Emerald-700',
+        '#065F46': 'Emerald-800', '#064E3B': 'Emerald-900',
+        '#FEF2F2': 'Rose-50', '#FEE2E2': 'Rose-100', '#FECACA': 'Rose-200', '#FCA5A5': 'Rose-300',
+        '#F87171': 'Rose-400', '#EF4444': 'Rose-500', '#DC2626': 'Rose-600', '#B91C1C': 'Rose-700',
+        '#991B1B': 'Rose-800', '#7F1D1D': 'Rose-900',
+        '#FFF7ED': 'Amber-50', '#FFEDD5': 'Amber-100', '#FED7AA': 'Amber-200', '#FDBA74': 'Amber-300',
+        '#FB923C': 'Amber-400', '#F97316': 'Amber-500', '#EA580C': 'Amber-600', '#C2410C': 'Amber-700',
+        '#9A3412': 'Amber-800', '#7C2D12': 'Amber-900',
+
+        // === PANTONE COLORS ===
+        '#5F4B8B': 'Ultra Violet', '#88B04B': 'Greenery', '#FF6F61': 'Living Coral', '#0F4C81': 'Classic Blue',
+        '#F5DF4D': 'Illuminating Yellow', '#939597': 'Ultimate Gray', '#6667AB': 'Very Peri', '#BE3455': 'Viva Magenta',
+        '#E2583E': 'Flame', '#009473': 'Emerald', '#B565A7': 'Purple Rose', '#D65076': 'Radiant Orchid',
+        '#955251': 'Marsala', '#F7CAC9': 'Rose Quartz', '#92A8D1': 'Serenity',
+
+        // === CRAYOLA COLORS ===
+        '#9F8170': 'Beaver', '#FD7C6E': 'Bittersweet', '#1F75FE': 'Blue Crayola', '#A2A2D0': 'Blue Bell',
+        '#6699CC': 'Blue Gray', '#0D98BA': 'Blue Green Crayola', '#7366BD': 'Blue Violet Crayola',
+        '#DE5D83': 'Blush', '#CD7F32': 'Bronze Crayola', '#C62D42': 'Brick Red Crayola',
+        '#5D76CB': 'Cobalt Blue Crayola', '#1DACD6': 'Cerulean Crayola', '#2D383A': 'Outer Space',
+        '#FFBCD9': 'Cotton Candy Crayola', '#FBE7B2': 'Banana Mania', '#F0E891': 'Spring Green Crayola',
+        '#8A795D': 'Shadow', '#76D7EA': 'Sky Blue Crayola', '#FC6C85': 'Tickle Me Pink', '#FFCFAB': 'Peach Crayola',
+        '#EF98AA': 'Mauvelous', '#E97451': 'Burnt Sienna', '#FAA76C': 'Atomic Tangerine', '#1CAC78': 'Crayola Green',
+        '#77DDE7': 'Sea Green Crayola', '#C32148': 'Maroon Crayola', '#B4674D': 'Chestnut', '#9ACEEB': 'Baby Blue',
+        '#C364C5': 'Fuchsia Crayola', '#D68A59': 'Copper Crayola', '#C8385A': 'Mulberry', '#FF6E4A': 'Outrageous Orange',
+        '#FFBCD9': 'Crayola Cotton Candy', '#FDDDE6': 'Crayola Piggy Pink',
+
+        // === EARTHY AND NATURAL ===
+        '#C2B280': 'Sand', '#F4C430': 'Saffron', '#A67B5B': 'Cafe au Lait', '#8B4513': 'Bark Brown',
+        '#9C661F': 'Cinnamon', '#C19A6B': 'Camel', '#EEDC82': 'Flax', '#FAD6A5': 'Beige Sand',
+        '#FFDB58': 'Mustard', '#556B2F': 'Moss Green', '#6B8E23': 'Olive Drab', '#708238': 'Fern Green',
+        '#8A9A5B': 'Asparagus', '#B2BEB5': 'Gray Green', '#E4D96F': 'Straw', '#FFCC33': 'Honey Yellow',
+        '#FFDAB9': 'Peach Puff', '#CD853F': 'Golden Brown',
+
+        // === MODERN UI NEUTRALS ===
+        '#ECECEC': 'Cool White', '#E0E0E0': 'Cloud Gray', '#DADADA': 'Soft Pewter', '#BEBEBE': 'Neutral Gray',
+        '#A9A9A9': 'Dim Neutral', '#707070': 'Dark Neutral', '#4B4B4B': 'Deep Charcoal', '#2B2B2B': 'Night Gray',
+        '#121212': 'Pure Black', '#FAFAFA': 'Paper White', '#EAEAEA': 'Smoke White',
+        '#C0C0C0': 'Silver Gray', '#808080': 'Medium Gray', '#404040': 'Graphite',
+
+        // === EXTENDED TAILWIND COLORS (PART 2) ===
+        '#F0FDF4': 'Green-50', '#DCFCE7': 'Green-100', '#BBF7D0': 'Green-200', '#86EFAC': 'Green-300',
+        '#4ADE80': 'Green-400', '#22C55E': 'Green-500', '#16A34A': 'Green-600', '#15803D': 'Green-700',
+        '#166534': 'Green-800', '#14532D': 'Green-900',
+        '#FFFBEB': 'Yellow-50', '#FEF3C7': 'Yellow-100', '#FDE68A': 'Yellow-200', '#FCD34D': 'Yellow-300',
+        '#FBBF24': 'Yellow-400', '#F59E0B': 'Yellow-500', '#D97706': 'Yellow-600', '#B45309': 'Yellow-700',
+        '#92400E': 'Yellow-800', '#78350F': 'Yellow-900',
+        '#FFF1F2': 'Pink-50', '#FFE4E6': 'Pink-100', '#FDA4AF': 'Pink-300', '#FB7185': 'Pink-400',
+        '#F43F5E': 'Pink-500', '#E11D48': 'Pink-600', '#BE123C': 'Pink-700', '#9F1239': 'Pink-800',
+        '#881337': 'Pink-900',
+        '#F5F3FF': 'Violet-50', '#EDE9FE': 'Violet-100', '#DDD6FE': 'Violet-200', '#C4B5FD': 'Violet-300',
+        '#A78BFA': 'Violet-400', '#8B5CF6': 'Violet-500', '#7C3AED': 'Violet-600', '#6D28D9': 'Violet-700',
+        '#5B21B6': 'Violet-800', '#4C1D95': 'Violet-900',
+        '#FAF5FF': 'Purple-50', '#F3E8FF': 'Purple-100', '#E9D5FF': 'Purple-200', '#D8B4FE': 'Purple-300',
+        '#C084FC': 'Purple-400', '#A855F7': 'Purple-500', '#9333EA': 'Purple-600', '#7E22CE': 'Purple-700',
+        '#6B21A8': 'Purple-800', '#581C87': 'Purple-900',
+        '#FDF4FF': 'Fuchsia-50', '#FAE8FF': 'Fuchsia-100', '#F5D0FE': 'Fuchsia-200', '#F0ABFC': 'Fuchsia-300',
+        '#E879F9': 'Fuchsia-400', '#D946EF': 'Fuchsia-500', '#C026D3': 'Fuchsia-600', '#A21CAF': 'Fuchsia-700',
+        '#86198F': 'Fuchsia-800', '#701A75': 'Fuchsia-900',
+        '#FFF7ED': 'Orange-50', '#FFEDD5': 'Orange-100', '#FED7AA': 'Orange-200', '#FDBA74': 'Orange-300',
+        '#FB923C': 'Orange-400', '#F97316': 'Orange-500', '#EA580C': 'Orange-600', '#C2410C': 'Orange-700',
+        '#9A3412': 'Orange-800', '#7C2D12': 'Orange-900',
+
+        // === BRAND COLORS ===
+        '#1877F2': 'Facebook Blue', '#1DA1F2': 'Twitter Blue', '#E1306C': 'Instagram Pink',
+        '#0A66C2': 'LinkedIn Blue', '#7289DA': 'Discord Blurple', '#FF4500': 'Reddit Orange',
+        '#5865F2': 'Discord Indigo', '#FF0000': 'YouTube Red', '#00AFF0': 'Skype Blue',
+        '#25D366': 'WhatsApp Green', '#0088CC': 'Telegram Blue', '#FF5700': 'Reddit Classic',
+        '#0E76A8': 'LinkedIn Original', '#171515': 'GitHub Black', '#FFFC00': 'Snapchat Yellow',
+        '#4267B2': 'Facebook Original', '#1DB954': 'Spotify Green', '#7289DA': 'Discord Original',
+        '#0077B5': 'LinkedIn Dark Blue', '#00ADEF': 'Twitter Sky Blue', '#FF9900': 'Amazon Orange',
+
+        // === PASTEL COLORS ===
+        '#FFB3BA': 'Pastel Pink', '#FFDFBA': 'Pastel Peach', '#FFFFBA': 'Pastel Yellow',
+        '#BAFFC9': 'Pastel Green', '#BAE1FF': 'Pastel Blue', '#E3BAFF': 'Pastel Purple',
+        '#FFC8DD': 'Cotton Candy Pink', '#FFD6A5': 'Soft Apricot', '#FDFFB6': 'Lemon Chiffon',
+        '#CAFFBF': 'Mint Pastel', '#9BF6FF': 'Sky Pastel', '#A0C4FF': 'Periwinkle Pastel',
+        '#BDB2FF': 'Lavender Pastel', '#FFC6FF': 'Light Magenta Pastel', '#FFFFFC': 'Off White',
+        '#FFF1F1': 'Rose Tint', '#F9F1E7': 'Ivory Cream', '#F0E5DE': 'Dusty Rose', '#FDE2E4': 'Peach Blush',
+
+        // === METALLIC COLORS ===
+        '#D4AF37': 'Metallic Gold', '#C0C0C0': 'Metallic Silver', '#B87333': 'Metallic Copper',
+        '#E5E4E2': 'Platinum', '#C9A0DC': 'Amethyst', '#DA8A67': 'Bronze', '#FFD700': 'Golden Glow',
+        '#A97142': 'Brass', '#CFB53B': 'Old Gold', '#E6BE8A': 'Champagne', '#D9D6CF': 'Nickel',
+        '#B8B8B8': 'Steel Gray', '#9C7C38': 'Antique Brass', '#E0B0FF': 'Metallic Lilac',
+
+        // === EARTH TONES (DEEP) ===
+        '#704214': 'Sepia', '#734F2B': 'Coffee', '#9A7B4F': 'Khaki Brown', '#3B2F2F': 'Dark Brown',
+        '#6E260E': 'Mahogany', '#4A2C2A': 'Deep Umber', '#43302E': 'Chestnut Brown', '#3C1414': 'Reddish Brown',
+        '#635147': 'Taupe', '#8E7C6D': 'Clay', '#B08D57': 'Sandstone', '#A0522D': 'Sienna Earth',
+        '#C19A6B': 'Camel Tan', '#D2B48C': 'Light Tan', '#E1C699': 'Pale Sand',
+
+        // === VINTAGE AND RETRO ===
+        '#F4C2C2': 'Tea Rose', '#C08081': 'Old Rose', '#EEDC82': 'Buff', '#D99058': 'Ochre',
+        '#F7E7CE': 'Champagne Pink', '#D1BEA8': 'Ash Beige', '#C3A995': 'Cafe Creme',
+        '#B99976': 'Bronzed Beige', '#A39881': 'Mink', '#FFE5B4': 'Apricot', '#FFCC99': 'Peach Beige',
+        '#E3B778': 'Tawny', '#C2B280': 'Sandstone Beige', '#F4BB44': 'Golden Apricot',
+
+        // === GEMSTONE COLORS ===
+        '#50C878': 'Emerald', '#E0115F': 'Ruby', '#0ABAB5': 'Aquamarine', '#9B111E': 'Garnet',
+        '#B65FCF': 'Amethyst Gem', '#6F8FAF': 'Sapphire', '#FFBF00': 'Topaz', '#B8860B': 'Amber Gem',
+        '#7FFFD4': 'Peridot', '#008B8B': 'Turquoise Gem', '#1C39BB': 'Lapis Lazuli', '#40E0D0': 'Blue Zircon',
+        '#2E8B57': 'Jade', '#48D1CC': 'Cyanite', '#9ACD32': 'Chrysoprase', '#FF7F50': 'Coral Gem',
+
+        // === NEON COLORS ===
+        '#39FF14': 'Neon Green', '#FF073A': 'Neon Red', '#FE019A': 'Neon Pink', '#F6F900': 'Neon Yellow',
+        '#04D9FF': 'Neon Blue', '#BC13FE': 'Neon Purple', '#FF6700': 'Neon Orange', '#CCFF00': 'Neon Lime',
+        '#0FFF50': 'Neon Mint', '#FE4164': 'Neon Magenta', '#9D00FF': 'Electric Violet',
+        '#7DF9FF': 'Electric Blue', '#FF43A4': 'Neon Fuchsia', '#DFFF00': 'Neon Chartreuse',
+
+        // === FLORAL & BOTANICAL COLORS ===
+        '#FFB7C5': 'Cherry Blossom Pink', '#FF69B4': 'Hot Pink Rose', '#E75480': 'Dark Pink Rose',
+        '#FF1493': 'Deep Pink Rose', '#F88379': 'Coral Pink', '#FBCCE7': 'Baby Pink',
+        '#FFB6C1': 'Light Pink', '#DE3163': 'Cerise', '#DA70D6': 'Orchid Bloom', '#D8BFD8': 'Thistle Bloom',
+        '#C71585': 'Magenta Rose', '#E30B5D': 'Raspberry Rose', '#F4A460': 'Sandy Rose',
+        '#E6B0AA': 'Blush Rose', '#FADADD': 'Pale Pink', '#F7CAC9': 'Rose Quartz',
+        '#EEC9D2': 'Petal Pink', '#F2D7D5': 'Dusty Rose', '#FFDFDD': 'Pink Mist',
+        '#D36C6C': 'Cinnamon Rose', '#C85A17': 'Terracotta Rose', '#E5AA70': 'Fawn Blossom',
+
+        // === OCEANIC & AQUATIC COLORS ===
+        '#001F3F': 'Deep Sea Blue', '#003366': 'Ocean Depths', '#004080': 'Marine Blue',
+        '#006994': 'Pacific Blue', '#007BA7': 'Cerulean Blue', '#0096C7': 'Sea Sky Blue',
+        '#00A8E8': 'Azure Wave', '#00BFFF': 'Deep Sky', '#40E0D0': 'Turquoise Tide',
+        '#5F9EA0': 'Cadet Sea', '#7FFFD4': 'Aquamarine Surf', '#00CED1': 'Tropical Water',
+        '#48D1CC': 'Lagoon', '#20B2AA': 'Light Sea', '#008B8B': 'Deep Sea Teal',
+        '#2E8B57': 'Seaweed Green', '#3CB371': 'Marine Green', '#66CDAA': 'Ocean Foam',
+        '#AFEEEE': 'Pale Turquoise', '#B2FFFF': 'Soft Aqua', '#E0FFFF': 'Foam Mist',
+
+        // === NATURE & EARTH COLORS ===
+        '#4B5320': 'Army Green', '#556B2F': 'Dark Olive', '#6B8E23': 'Olive Drab',
+        '#708238': 'Fern', '#8A9A5B': 'Asparagus', '#A0522D': 'Sienna', '#CD853F': 'Peru Brown',
+        '#D2691E': 'Chocolate Soil', '#8B4513': 'Saddle Brown', '#A67B5B': 'Coffee Tan',
+        '#DEB887': 'Burly Wood', '#C19A6B': 'Camel Brown', '#F5DEB3': 'Wheat Field',
+        '#EEDC82': 'Harvest Gold', '#DAA520': 'Goldenrod Meadow', '#EEE8AA': 'Pale Harvest',
+        '#BDB76B': 'Dark Khaki', '#F0E68C': 'Khaki Field', '#C3B091': 'Hazel Earth',
+        '#BC986A': 'Desert Sand', '#C2B280': 'Beige Stone', '#F5F5DC': 'Beige Natural',
+        '#F0FFF0': 'Honeydew Leaf', '#98FB98': 'Pale Green Leaf', '#90EE90': 'Light Meadow',
+        '#32CD32': 'Lime Green Field', '#00FF7F': 'Spring Green Field', '#228B22': 'Forest Green',
+        '#006400': 'Dark Forest', '#355E3B': 'Hunter Green', '#2E8B57': 'Sea Green',
+        '#556B2F': 'Moss Green', '#9ACD32': 'Yellow Green', '#7CFC00': 'Lawn Green',
+
+        // === SKY & ATMOSPHERIC COLORS ===
+        '#E0FFFF': 'Light Cyan Sky', '#B0E0E6': 'Powder Sky', '#ADD8E6': 'Soft Sky Blue',
+        '#87CEEB': 'Sky Blue', '#87CEFA': 'Light Sky Blue', '#4682B4': 'Steel Sky',
+        '#5F9EA0': 'Cadet Sky', '#6495ED': 'Cornflower Sky', '#4169E1': 'Royal Sky',
+        '#1E90FF': 'Dodger Sky', '#00BFFF': 'Bright Sky', '#0000CD': 'Medium Blue Sky',
+        '#0000FF': 'True Blue Sky', '#191970': 'Midnight Sky', '#B0C4DE': 'Light Steel Sky',
+        '#E6E6FA': 'Lavender Mist', '#F0F8FF': 'Alice Blue Haze', '#F8F8FF': 'Ghost Haze',
+        '#FAF0E6': 'Linen Glow', '#FFF5EE': 'Seashell Glow', '#FFF8DC': 'Cornsilk Sunlight',
+        '#FFFFF0': 'Ivory Light', '#FFFACD': 'Lemon Light', '#FAFAD2': 'Golden Light',
+
+        // === MODERN UI ACCENT COLORS ===
+        '#1ABC9C': 'Turquoise UI', '#16A085': 'Dark Turquoise UI', '#2ECC71': 'Emerald UI',
+        '#27AE60': 'Green UI', '#3498DB': 'Sky UI', '#2980B9': 'Ocean UI', '#9B59B6': 'Amethyst UI',
+        '#8E44AD': 'Purple UI', '#34495E': 'Wet Asphalt', '#2C3E50': 'Midnight UI',
+        '#F1C40F': 'Sunflower UI', '#F39C12': 'Orange UI', '#E67E22': 'Carrot UI',
+        '#D35400': 'Pumpkin UI', '#E74C3C': 'Alizarin UI', '#C0392B': 'Pomegranate UI',
+        '#ECF0F1': 'Cloud UI', '#BDC3C7': 'Silver UI', '#95A5A6': 'Concrete UI', '#7F8C8D': 'Asbestos UI',
+
+        // === GLASSMORPHIC & SOFT UI COLORS ===
+        '#EEF2F3': 'Soft Ice', '#E0EAFC': 'Cloud Tint', '#CFDEF3': 'Soft Steel', '#E6E9F0': 'Misty Silver',
+        '#E3E3E3': 'Neutral Frost', '#F7F8F8': 'Snow Mist', '#DADFE1': 'Cloud Gray Soft',
+        '#CCD1D1': 'Warm Mist', '#FBFCFC': 'Ivory White', '#E5E8E8': 'Steel Mist',
+        '#AEDFF7': 'Glass Blue', '#C9F0FF': 'Crystal Blue', '#F2F6F5': 'Frosted White',
+        '#E8F6EF': 'Mint Mist', '#FDFEFE': 'Softest White', '#EFFBF8': 'Aqua Frost',
+        '#EBF5FB': 'Sky Frost', '#F9EBEA': 'Rosy Frost', '#FCF3CF': 'Lemon Frost',
+        '#FEF9E7': 'Parchment Frost',
+
+        // === SUNSET & DESERT COLORS ===
+        '#FFDAB9': 'Peach Puff Sunset', '#FFE4B5': 'Soft Sand', '#FFEBCD': 'Desert Ivory',
+        '#FFEFD5': 'Papaya Sand', '#FFD39B': 'Sandy Glow', '#FFB347': 'Sunset Orange',
+        '#FF9966': 'Tangerine Sunset', '#FF7E5F': 'Coral Horizon', '#FF6F61': 'Living Coral',
+        '#FF5E3A': 'Crimson Sunset', '#FD5E53': 'Sunset Red', '#FC8EAC': 'Salmon Pink',
+        '#FF8243': 'Neon Carrot', '#F88379': 'Light Coral Sunset', '#FF9F80': 'Melon Glow',
+        '#E97451': 'Burnt Sienna', '#E25822': 'Cedar Red', '#B7410E': 'Rust Brown',
+        '#C46210': 'Alloy Orange', '#CC7722': 'Ochre Sand', '#D2B48C': 'Tan Dust',
+        '#C19A6B': 'Camel Sand', '#E3A857': 'Sunstone', '#E9967A': 'Dark Salmon Sunset',
+        '#FA8072': 'Salmon Light', '#FFA07A': 'Light Salmon Glow', '#FFB07C': 'Peach Glow',
+        '#FFD580': 'Apricot Light', '#FAD6A5': 'Desert Cream',
+
+        // === GALAXY & COSMIC COLORS ===
+        '#0B0033': 'Deep Space', '#1A0B2E': 'Cosmic Indigo', '#2E0854': 'Nebula Purple',
+        '#4B0082': 'Deep Indigo Star', '#6A0DAD': 'Galactic Violet', '#8A2BE2': 'Space Blue Violet',
+        '#9400D3': 'Dark Galaxy Violet', '#9932CC': 'Nebula Violet', '#BA55D3': 'Solar Orchid',
+        '#DA70D6': 'Supernova Orchid', '#EE82EE': 'Cosmic Violet Light', '#DDA0DD': 'Plum Nebula',
+        '#E6E6FA': 'Starlight Lavender', '#9370DB': 'Medium Galaxy Purple', '#7B68EE': 'Orion Blue',
+        '#483D8B': 'Milky Way Blue', '#191970': 'Midnight Universe', '#000080': 'Void Navy',
+        '#2C3E50': 'Space Depths', '#34495E': 'Stardust Gray', '#5D6D7E': 'Nebula Mist',
+        '#7F8FA6': 'Lunar Gray', '#95A5A6': 'Meteorite Silver', '#BDC3C7': 'Cloud Core',
+
+        // === METALLIC & LUXURY COLORS ===
+        '#D4AF37': 'Gold', '#FFD700': 'Bright Gold', '#E6BE8A': 'Light Gold', '#C5B358': 'Antique Gold',
+        '#C0C0C0': 'Silver', '#BFC1C2': 'Light Silver', '#A9A9A9': 'Dark Silver', '#B87333': 'Copper',
+        '#CD7F32': 'Bronze', '#DA8A67': 'Light Bronze', '#B8860B': 'Goldenrod Metal',
+        '#C28840': 'Amber Bronze', '#C9AE5D': 'Brass', '#CFB53B': 'Old Gold', '#B5A642': 'Brass Metal',
+        '#E5C07B': 'Soft Brass', '#EEDC82': 'Pale Gold', '#FAFAD2': 'Lemon Gold', '#D8BFD8': 'Lilac Metal',
+        '#9A7B4F': 'Pewter', '#8E8E8E': 'Gunmetal', '#71797E': 'Slate Steel', '#43464B': 'Graphite',
+        '#343434': 'Carbon', '#3C3C3B': 'Charcoal Metal', '#2F2F2F': 'Black Iron',
+
+        // === NEON & RETRO COLORS ===
+        '#39FF14': 'Neon Green', '#CCFF00': 'Electric Lime', '#00FFFF': 'Neon Cyan',
+        '#0FF0FC': 'Aqua Neon', '#1B03A3': 'Electric Indigo', '#6F00FF': 'Neon Violet',
+        '#FF00FF': 'Hot Magenta', '#FF10F0': 'Electric Pink', '#FF073A': 'Neon Red',
+        '#FF5F1F': 'Neon Orange', '#FFEA00': 'Neon Yellow', '#FFFF33': 'Bright Yellow Neon',
+        '#FF6EC7': 'Bubblegum Neon', '#F433FF': 'Retro Fuchsia', '#00FFEF': 'Turquoise Neon',
+        '#21FC0D': 'Luminous Green', '#FE019A': 'Vibrant Pink', '#FF355E': 'Radical Red',
+        '#FD1C03': 'Laser Red', '#FE4164': 'Ultra Pink',
+
+        // === FOOD & BEVERAGE COLORS ===
+        '#FFF8DC': 'Cornsilk Cream', '#F5DEB3': 'Wheat Bread', '#FFE4B5': 'Caramel Cream',
+        '#FFDAB9': 'Peach', '#FFB347': 'Orange Juice', '#F4A460': 'Toffee', '#D2691E': 'Chocolate',
+        '#8B4513': 'Dark Cocoa', '#A0522D': 'Coffee Brown', '#6F4E37': 'Espresso',
+        '#4B3621': 'Mocha', '#3B2F2F': 'Dark Roast', '#964B00': 'Brown Sugar', '#E97451': 'Salmon Flesh',
+        '#FF6347': 'Tomato', '#CD5C5C': 'Apple Skin', '#800000': 'Wine Red', '#B22222': 'Berry Red',
+        '#C71585': 'Raspberry', '#DB7093': 'Strawberry Cream', '#FF7F50': 'Coral Peach',
+        '#FF9966': 'Papaya', '#FFB6C1': 'Cotton Candy', '#FFF0F5': 'Lychee Mist',
+        '#FFE5B4': 'Mango Cream', '#F0E68C': 'Banana', '#FFFACD': 'Lemon Custard',
+        '#FFFF99': 'Pineapple', '#CCFF00': 'Kiwi', '#ADFF2F': 'Lime', '#7FFF00': 'Green Apple',
+        '#9ACD32': 'Olive Oil', '#32CD32': 'Fresh Lime', '#228B22': 'Spinach Leaf', '#006400': 'Kale',
+        '#90EE90': 'Mint', '#C1FFC1': 'Honeydew', '#E0FFFF': 'Coconut Water', '#AFEEEE': 'Bubble Tea Ice',
+        '#4682B4': 'Blueberry', '#483D8B': 'Blackberry', '#800080': 'Grape', '#8B008B': 'Plum',
+        '#BA55D3': 'Dragonfruit', '#EE82EE': 'Lavender Ice', '#F0FFF0': 'Vanilla Frost',
+        '#FFF5EE': 'Cream Frost', '#FFF8F0': 'Milk Foam', '#FFFFFF': 'Whipped Cream',
+
+        // === WOOD, FABRIC & MATERIAL DESIGN TONES ===
+        '#EADDCA': 'Beige Linen', '#CBB67C': 'Bamboo Fiber', '#D2B48C': 'Tan Leather',
+        '#C19A6B': 'Camel Hide', '#A67B5B': 'Walnut Wood', '#8B5A2B': 'Oak Bark',
+        '#704214': 'Mahogany', '#5C4033': 'Chestnut Wood', '#3E2723': 'Ebony Wood',
+        '#7E5835': 'Maple Brown', '#D7B89E': 'Sandstone', '#C49E73': 'Clay Pot',
+        '#D4A017': 'Golden Oak', '#B68C43': 'Honey Maple', '#E6BE8A': 'Blonde Wood',
+        '#A1866F': 'Ash Brown', '#9F8170': 'Dusty Taupe', '#D3B683': 'Driftwood',
+        '#BDB76B': 'Pale Timber', '#FFF5E1': 'Ivory Cotton', '#F5F5DC': 'Beige Cloth',
+        '#C2B280': 'Khaki Fabric', '#C9A66B': 'Hemp Rope', '#B39B7A': 'Canvas Beige',
+        '#6E5849': 'Tanned Leather', '#8E793E': 'Bronze Fabric', '#4B382A': 'Dark Suede',
+        '#7C482B': 'Cedar Wood', '#5C4033': 'Rosewood', '#704241': 'Cherry Wood',
+
+        // === MATERIAL DESIGN STYLE COLORS ===
+        '#F44336': 'MD Red 500', '#E57373': 'MD Red 300', '#D32F2F': 'MD Red 700',
+        '#E91E63': 'MD Pink 500', '#F06292': 'MD Pink 300', '#C2185B': 'MD Pink 700',
+        '#9C27B0': 'MD Purple 500', '#BA68C8': 'MD Purple 300', '#7B1FA2': 'MD Purple 700',
+        '#673AB7': 'MD Deep Purple 500', '#9575CD': 'MD Deep Purple 300', '#512DA8': 'MD Deep Purple 700',
+        '#3F51B5': 'MD Indigo 500', '#7986CB': 'MD Indigo 300', '#303F9F': 'MD Indigo 700',
+        '#2196F3': 'MD Blue 500', '#64B5F6': 'MD Blue 300', '#1976D2': 'MD Blue 700',
+        '#03A9F4': 'MD Light Blue 500', '#4FC3F7': 'MD Light Blue 300', '#0288D1': 'MD Light Blue 700',
+        '#00BCD4': 'MD Cyan 500', '#4DD0E1': 'MD Cyan 300', '#0097A7': 'MD Cyan 700',
+        '#009688': 'MD Teal 500', '#4DB6AC': 'MD Teal 300', '#00796B': 'MD Teal 700',
+        '#4CAF50': 'MD Green 500', '#81C784': 'MD Green 300', '#388E3C': 'MD Green 700',
+        '#8BC34A': 'MD Light Green 500', '#AED581': 'MD Light Green 300', '#689F38': 'MD Light Green 700',
+        '#CDDC39': 'MD Lime 500', '#DCE775': 'MD Lime 300', '#AFB42B': 'MD Lime 700',
+        '#FFEB3B': 'MD Yellow 500', '#FFF176': 'MD Yellow 300', '#FBC02D': 'MD Yellow 700',
+        '#FFC107': 'MD Amber 500', '#FFD54F': 'MD Amber 300', '#FFA000': 'MD Amber 700',
+        '#FF9800': 'MD Orange 500', '#FFB74D': 'MD Orange 300', '#F57C00': 'MD Orange 700',
+        '#FF5722': 'MD Deep Orange 500', '#FF8A65': 'MD Deep Orange 300', '#E64A19': 'MD Deep Orange 700',
+        '#795548': 'MD Brown 500', '#A1887F': 'MD Brown 300', '#5D4037': 'MD Brown 700',
+        '#9E9E9E': 'MD Grey 500', '#E0E0E0': 'MD Grey 300', '#616161': 'MD Grey 700',
+        '#607D8B': 'MD Blue Grey 500', '#90A4AE': 'MD Blue Grey 300', '#455A64': 'MD Blue Grey 700',
+
+        // === TECH BRAND COLORS ===
+        '#4285F4': 'Google Blue', '#34A853': 'Google Green', '#FBBC05': 'Google Yellow', '#EA4335': 'Google Red',
+        '#3B5998': 'Facebook Blue', '#1877F2': 'Facebook Modern Blue', '#1DA1F2': 'Twitter Blue',
+        '#14171A': 'Twitter Dark Gray', '#0077B5': 'LinkedIn Blue', '#0A66C2': 'LinkedIn Modern Blue',
+        '#7289DA': 'Discord Blurple', '#5865F2': 'Discord Modern Blurple', '#99AAB5': 'Discord Gray',
+        '#FF0000': 'YouTube Red', '#282828': 'YouTube Black', '#FF4500': 'Reddit Orange',
+        '#FF5700': 'Reddit New Orange', '#FF9900': 'Amazon Orange', '#146EB4': 'Amazon Blue',
+        '#232F3E': 'Amazon Dark Gray', '#25D366': 'WhatsApp Green', '#075E54': 'WhatsApp Dark Green',
+        '#E4405F': 'Instagram Pink', '#833AB4': 'Instagram Purple', '#FCAF45': 'Instagram Yellow',
+        '#405DE6': 'Instagram Blue', '#1877F2': 'Meta Blue', '#00AFF0': 'Skype Blue',
+        '#0078D7': 'Microsoft Blue', '#F25022': 'Microsoft Orange', '#7FBA00': 'Microsoft Green',
+        '#FFB900': 'Microsoft Yellow', '#00A4EF': 'Microsoft Cyan', '#21759B': 'WordPress Blue',
+        '#9146FF': 'Twitch Purple', '#FF5700': 'Twitch Orange Accent', '#FF4B4B': 'Netflix Red',
+        '#221F1F': 'Netflix Black', '#E50914': 'Netflix Brand Red', '#1DB954': 'Spotify Green',
+        '#191414': 'Spotify Black', '#F5C518': 'IMDb Yellow', '#FF9900': 'SoundCloud Orange',
+        '#FF3300': 'SoundCloud Red', '#7289DA': 'GitHub Blurple', '#24292F': 'GitHub Black',
+        '#6CC644': 'GitHub Green', '#4078C0': 'GitHub Blue', '#F1502F': 'GitHub Orange',
+        '#563D7C': 'Bootstrap Purple', '#7952B3': 'Bootstrap Violet', '#3178C6': 'TypeScript Blue',
+        '#F7DF1E': 'JavaScript Yellow', '#61DAFB': 'React Blue', '#68A063': 'Node Green',
+        '#326CE5': 'Kubernetes Blue', '#2496ED': 'Docker Blue', '#FF6C37': 'Postman Orange',
+        '#336791': 'PostgreSQL Blue', '#E34F26': 'HTML5 Orange', '#1572B6': 'CSS3 Blue',
+        '#F16529': 'Frontend Orange', '#B92B27': 'Pinterest Red', '#E60023': 'Pinterest Brand Red',
+
+        // === CITYSCAPE & INDUSTRIAL COLORS ===
+        '#2E2E2E': 'Asphalt Gray', '#4A4A4A': 'Concrete Gray', '#5E5E5E': 'Urban Slate',
+        '#707070': 'Steel Gray', '#808080': 'Industrial Silver', '#999999': 'Modern Metal',
+        '#B0B0B0': 'Urban Cloud', '#C0C0C0': 'Chrome', '#D3D3D3': 'Light Alloy',
+        '#E0E0E0': 'Pale Cement', '#E8E8E8': 'Soft Steel', '#F0F0F0': 'Fog White',
+        '#1C1C1C': 'Charcoal Smoke', '#2F4F4F': 'Dark Slate', '#36454F': 'Graphite Gray',
+        '#3B3C36': 'Tarmac', '#43464B': 'Gunmetal Gray', '#53565A': 'Concrete Shadow',
+        '#696969': 'Dim Concrete', '#778899': 'Slate Mist', '#8B8589': 'Industrial Dust',
+        '#A9A9A9': 'Urban Haze', '#BEBEBE': 'Cement Frost', '#DCDCDC': 'Overcast White',
+        '#F5F5F5': 'Urban Mist', '#FAFAFA': 'Metro White', '#FFFFFF': 'Architect White',
+
+        // === BUILDING MATERIALS & ARCHITECTURE TONES ===
+        '#8B0000': 'Brick Red', '#A52A2A': 'Clay Brick', '#B22222': 'Rustic Brick', '#8B4513': 'Timber Brown',
+        '#CD853F': 'Cedar Wood', '#DEB887': 'Burlap Tan', '#D2B48C': 'Stucco Beige', '#C3B091': 'Sandstone',
+        '#C0C0C0': 'Concrete Silver', '#BEBEBE': 'Cement Gray', '#9E9E9E': 'Steel Beam', '#808080': 'Iron Gray',
+        '#696969': 'Dark Iron', '#4B4B4B': 'Charcoal Cement', '#2F4F4F': 'Slate Stone', '#708090': 'Slate Gray',
+        '#778899': 'Light Slate', '#A9A9A9': 'Concrete Block', '#BC8F8F': 'Red Clay', '#C19A6B': 'Adobe Mud',
+        '#D2691E': 'Copper Rust', '#B87333': 'Aged Copper', '#D4AF37': 'Golden Brass', '#BDB76B': 'Weathered Gold',
+        '#DAA520': 'Urban Gold', '#E6E6FA': 'Frosted Plaster', '#E0E0E0': 'Marble White', '#F5F5F5': 'Porcelain',
+        '#FAF9F6': 'Architectural White', '#F0EAD6': 'Ivory Plaster', '#EAEAEA': 'Soft Cement', '#E5E5E5': 'Mild Gray',
+        '#DCDCDC': 'Plaster Gray', '#D8D8D8': 'Modern Wall', '#C8C8C8': 'Foundation Gray', '#A0522D': 'Mahogany Timber',
+        '#3E2723': 'Ebony Wood', '#704214': 'Walnut Finish', '#B8860B': 'Bronze Alloy', '#C9AE5D': 'Aged Brass',
+
+        // === STONE, GRANITE & EARTH TEXTURES ===
+        '#8B8680': 'Granite Gray', '#A49A87': 'Limestone', '#9F8170': 'Taupe Stone', '#A39887': 'River Rock',
+        '#928E85': 'Pebble Gray', '#BDB6A6': 'Ash Stone', '#B8B799': 'Moss Rock', '#C4C3D0': 'Fog Marble',
+        '#C0C2C9': 'Pale Granite', '#D8D8BF': 'Oyster White', '#D3D3D3': 'Polished Cement', '#DADBDD': 'Soft Concrete',
+        '#F2F3F4': 'White Marble', '#F7F7F7': 'Carrara White', '#EDEDED': 'Light Limestone', '#EFECE7': 'Chalk Dust',
+        '#DDD6CE': 'Sandstone Light', '#E5DCC5': 'Beige Marble', '#B39B7A': 'Travertine', '#A68B6E': 'Claystone',
+        '#7D7461': 'Basalt', '#5C5046': 'Obsidian', '#4E4E4E': 'Graphite Stone', '#2C2C2C': 'Black Granite',
+
+        // === PASTEL AESTHETIC COLORS ===
+        '#FADADD': 'Pastel Pink', '#FDFD96': 'Pastel Yellow', '#AEC6CF': 'Pastel Blue', '#B39EB5': 'Pastel Purple',
+        '#77DD77': 'Pastel Green', '#FFB347': 'Pastel Orange', '#CFCFC4': 'Pastel Gray', '#FF6961': 'Soft Red',
+        '#DEA5A4': 'Dusty Pink', '#CB99C9': 'Light Violet', '#FFD1DC': 'Cotton Pink', '#FFB7CE': 'Baby Pink',
+        '#B5EAD7': 'Mint Cream', '#C7CEEA': 'Sky Lilac', '#F6EAC2': 'Creamy Yellow', '#E0BBE4': 'Lavender Mist',
+        '#D5AAFF': 'Periwinkle Glow', '#FFDAC1': 'Peach Pastel', '#E2F0CB': 'Soft Mint', '#C8E7ED': 'Pale Aqua',
+
+        // === RETRO / VINTAGE COLORS ===
+        '#E2725B': 'Rusty Coral', '#C97C5D': 'Vintage Clay', '#A15325': 'Retro Brown', '#6B4226': 'Aged Walnut',
+        '#B56576': 'Retro Rose', '#E56B6F': 'Muted Red', '#EAAC8B': 'Retro Peach', '#EAD2AC': 'Antique Linen',
+        '#A2A77F': 'Olive Retro', '#7A8450': 'Avocado Green', '#8C8C88': 'Retro Gray', '#4B4E4D': 'Dusty Graphite',
+        '#D8CAB8': 'Old Paper', '#C5BAAF': 'Sepia White', '#A39887': 'Dusty Sand', '#D3A87C': 'Faded Bronze',
+        '#D9BF77': 'Golden Tan', '#D2C29D': 'Retro Beige', '#A39081': 'Muted Clay', '#8D7B68': 'Weathered Brown',
+
+        // === VAPORWAVE COLORS ===
+        '#FF71CE': 'Vapor Pink', '#B967FF': 'Vapor Purple', '#01CDFE': 'Vapor Blue', '#05FFA1': 'Vapor Green',
+        '#F5F5F5': 'Neon White', '#FFB3DE': 'Bubblegum Pink', '#B2F7EF': 'Mint Neon', '#C8A2C8': 'Soft Violet',
+        '#C7CEEA': 'Cloud Lavender', '#A0CED9': 'Ocean Pastel', '#FFD6E0': 'Dream Pink', '#FBEAFF': 'Frosty Lilac',
+        '#E4F1FE': 'Sky Fade', '#C5CBE3': 'Soft Periwinkle', '#9FA8DA': 'Vapor Indigo', '#B8A9C9': 'Hologram Lavender',
+
+        // === CYBERPUNK COLORS ===
+        '#FF0090': 'Cyber Pink', '#FF00FF': 'Neon Magenta', '#00FFFF': 'Aqua Neon', '#39FF14': 'Cyber Green',
+        '#FF3131': 'Electric Red', '#FFEA00': 'Laser Yellow', '#08F7FE': 'Tech Cyan', '#FE53BB': 'Neon Fuchsia',
+        '#F5D300': 'Cyber Yellow', '#00FF9C': 'Glitch Green', '#7DF9FF': 'Neon Sky', '#FF2079': 'Digital Pink',
+        '#FF1493': 'Hot Magenta', '#E100FF': 'Ultraviolet Glow', '#9D00FF': 'Deep Cyber Purple',
+        '#00BFFF': 'Electric Blue', '#2E00FF': 'Hyper Blue', '#3A0CA3': 'Matrix Indigo', '#7C00FF': 'Plasma Violet',
+
+        // === MINIMAL & MODERN UI NEUTRALS ===
+        '#FAFAFA': 'Paper White', '#F2F2F2': 'Soft White', '#EAEAEA': 'Gray Whisper', '#E0E0E0': 'Neutral Mist',
+        '#D6D6D6': 'Pale Stone', '#CCCCCC': 'Cloud Gray', '#BFBFBF': 'Cool Gray', '#AFAFAF': 'Muted Gray',
+        '#999999': 'Steel Light', '#808080': 'Standard Gray', '#666666': 'Graphite Mid', '#4D4D4D': 'Dark Graphite',
+        '#333333': 'Charcoal Dark', '#1A1A1A': 'Near Black', '#000000': 'True Black',
+        '#ECECEC': 'Off White', '#F5F5F5': 'Fog White', '#DCDCDC': 'Cloud Mist', '#E8E8E8': 'Soft Cloud',
+        '#C8C8C8': 'Urban Gray', '#B0B0B0': 'Pewter Neutral', '#999999': 'Ash Gray', '#7F7F7F': 'Slate Gray'
+        
+    };
+
+      
+      const elements = {
+        hexInput: document.getElementById('hexInput'),
+        colorPicker: document.getElementById('colorPicker'),
+        applyBtn: document.getElementById('applyBtn'),
+        swatch: document.getElementById('swatch'),
+        swatchHex: document.getElementById('swatchHex'),
+        swatchName: document.getElementById('swatchName'),
+        primaryName: document.getElementById('primaryName'),
+        secondaryHex: document.getElementById('secondaryHex'),
+        matchesEl: document.getElementById('matches'),
+        errorEl: document.getElementById('error'),
+        copyHexBtn: document.getElementById('copyHex'),
+        copyNameBtn: document.getElementById('copyName'),
+        distancePill: document.getElementById('distancePill')
+      };
+
+      let currentColorName = 'Turquoise';
+
+      function normalizeHex(raw) {
+        if (!raw) return null;
+        let val = raw.trim().replace(/\s+/g, '');
+        if (val.startsWith('#')) val = val.substring(1);
+        val = val.toUpperCase();
+        
+        if (!/^[A-F0-9]{3}$/.test(val) && !/^[A-F0-9]{6}$/.test(val)) {
+          return null;
+        }
+        
+        if (val.length === 3) {
+          val = val[0] + val[0] + val[1] + val[1] + val[2] + val[2];
+        }
+        
+        return '#' + val;
+      }
+
+      function hexToRgb(hex) {
+        const r = parseInt(hex.substring(1,3), 16);
+        const g = parseInt(hex.substring(3,5), 16);
+        const b = parseInt(hex.substring(5,7), 16);
+        return {r, g, b};
+      }
+
+      function colorDistance(c1, c2) {
+        const rDiff = c1.r - c2.r;
+        const gDiff = c1.g - c2.g;
+        const bDiff = c1.b - c2.b;
+        return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+      }
+
+      function getContrastYIQ(hex) {
+        const rgb = hexToRgb(hex);
+        const yiq = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+        return (yiq >= 160) ? 'rgba(8,12,16,0.9)' : '#f8fbff';
+      }
+
+      function showError(message) {
+        if (!message) {
+          elements.errorEl.classList.remove('show');
+          elements.errorEl.textContent = '';
+          return;
+        }
+        elements.errorEl.textContent = message;
+        elements.errorEl.classList.add('show');
+        setTimeout(() => {
+          elements.errorEl.classList.remove('show');
+        }, 5000);
+      }
+
+      function findClosestColorName(inputHex) {
+        try {
+          const inputRgb = hexToRgb(inputHex);
+          const matches = [];
+          
+          // Calculate distance to all colors in our database
+          for (const [hex, name] of Object.entries(colorDatabase)) {
+            const dbRgb = hexToRgb(hex);
+            const distance = colorDistance(inputRgb, dbRgb);
+            matches.push({ name, hex, distance });
+          }
+          
+          // Sort by distance (closest first)
+          matches.sort((a, b) => a.distance - b.distance);
+          
+          // Remove duplicates by name and keep closest
+          const uniqueMatches = [];
+          const seenNames = new Set();
+          
+          for (const match of matches) {
+            if (!seenNames.has(match.name)) {
+              seenNames.add(match.name);
+              uniqueMatches.push(match);
+              if (uniqueMatches.length >= 10) break;
+            }
+          }
+          
+          return uniqueMatches;
+          
+        } catch (err) {
+          console.error('Error finding color name:', err);
+          throw err;
+        }
+      }
+
+      function updateColor(hex) {
+        try {
+          const matches = findClosestColorName(hex);
+          
+          if (matches.length === 0) {
+            throw new Error('Could not find a matching color name');
+          }
+          
+          const closest = matches[0];
+          currentColorName = closest.name;
+          
+          elements.swatch.style.background = hex;
+          elements.swatchHex.textContent = hex;
+          elements.swatchName.textContent = closest.name;
+          elements.swatchName.style.color = getContrastYIQ(hex);
+          elements.swatchHex.style.color = getContrastYIQ(hex);
+          elements.primaryName.textContent = closest.name;
+          elements.secondaryHex.textContent = hex;
+          elements.distancePill.textContent = `Match accuracy: ${Math.round(100 - closest.distance/2.55)}%`;
+          
+          showError('');
+          
+          elements.matchesEl.innerHTML = '';
+          
+          // Get only top 3 alternative matches
+          const alternativeMatches = matches.slice(1, 5);
+          
+          alternativeMatches.forEach((match) => {
+            const matchEl = document.createElement('div');
+            matchEl.className = 'match';
+            
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.background = match.hex;
+            
+            const info = document.createElement('div');
+            info.className = 'match-info';
+            
+            const name = document.createElement('div');
+            name.className = 'match-name';
+            name.textContent = match.name;
+            
+            const hexCode = document.createElement('div');
+            hexCode.className = 'match-hex';
+            hexCode.textContent = match.hex;
+            
+            const accuracy = document.createElement('div');
+            accuracy.className = 'match-accuracy';
+            accuracy.textContent = `Match accuracy: ${Math.round(100 - match.distance/2.55)}%`;
+            
+            const actions = document.createElement('div');
+            actions.className = 'match-actions';
+            
+            const copyHexBtn = document.createElement('button');
+            copyHexBtn.className = 'match-btn';
+            copyHexBtn.textContent = 'Copy Hex';
+            copyHexBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              navigator.clipboard.writeText(match.hex)
+                .then(() => showError(`Copied ${match.hex} to clipboard!`));
+            });
+            
+            const copyNameBtn = document.createElement('button');
+            copyNameBtn.className = 'match-btn';
+            copyNameBtn.textContent = 'Copy Name';
+            copyNameBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              navigator.clipboard.writeText(match.name)
+                .then(() => showError(`Copied "${match.name}" to clipboard!`));
+            });
+            
+            info.appendChild(name);
+            info.appendChild(hexCode);
+            info.appendChild(accuracy);
+            
+            actions.appendChild(copyHexBtn);
+            actions.appendChild(copyNameBtn);
+            
+            matchEl.appendChild(dot);
+            matchEl.appendChild(info);
+            matchEl.appendChild(actions);
+            
+            matchEl.addEventListener('click', () => {
+              elements.hexInput.value = match.hex;
+              elements.colorPicker.value = match.hex;
+              updateColor(match.hex);
+            });
+            
+            elements.matchesEl.appendChild(matchEl);
+          });
+          
+        } catch (err) {
+          console.error('Error updating color:', err);
+          showError(err.message || 'An error occurred while updating the color');
+        }
+      }
+
+      // Event Listeners
+      elements.hexInput.addEventListener('input', (e) => {
+        const hex = normalizeHex(e.target.value);
+        if (hex) {
+          elements.colorPicker.value = hex;
+          updateColor(hex);
+        }
+      });
+
+      elements.colorPicker.addEventListener('input', (e) => {
+        const hex = e.target.value.toUpperCase();
+        elements.hexInput.value = hex;
+        updateColor(hex);
+      });
+
+      elements.applyBtn.addEventListener('click', () => {
+        const hex = normalizeHex(elements.hexInput.value);
+        if (!hex) {
+          showError('Please enter a valid hex color code');
+          return;
+        }
+        elements.colorPicker.value = hex;
+        updateColor(hex);
+      });
+
+      elements.copyHexBtn.addEventListener('click', () => {
+        const hex = elements.swatchHex.textContent;
+        navigator.clipboard.writeText(hex)
+          .then(() => showError('Hex code copied to clipboard!'))
+          .catch(() => showError('Failed to copy hex code'));
+      });
+
+      elements.copyNameBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(currentColorName)
+          .then(() => showError('Color name copied to clipboard!'))
+          .catch(() => showError('Failed to copy color name'));
+      });
+
+      // Initialize with default color
+      updateColor('#40E0D0');
+    })();
+  </script>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Developed by <a href="mailto:debojeetbhowmick@gmail.com" target="_blank">Debojeet Bhowmick</a> | 
+            Connect with me on my <a href="https://debojeet-bhowmick.netlify.app/" target="_blank">Website</a></p>
+        </div>
+    </footer>
+</body>
+</html>
