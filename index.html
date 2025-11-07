@@ -318,6 +318,7 @@
     }
 
     .label {
+      padding-top: 10px;
       font-size: clamp(12px, 2.2vw, 13px);
       font-weight: 700;
       color: rgba(230,238,248,0.8);
@@ -408,14 +409,6 @@
       padding: clamp(12px, 3vw, 16px);
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       backdrop-filter: blur(10px);
-    }
-
-    .color-preview {
-      width: 100%;
-      height: clamp(50px, 8vw, 60px);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
     }
 
     .picker-canvas-wrapper {
@@ -882,12 +875,7 @@
     <div class="orb o2"></div>
     <div class="card">
       <div class="left">
-        <div class="swatch" id="swatch">
-          <div class="swatch-content">
-            <div class="swatch-hex" id="swatchHex">#40E0D0</div>
-            <div class="swatch-name" id="swatchName">Turquoise</div>
-          </div>
-        </div>
+        
         
         <div class="input-section">
           <div class="label">Enter Hex Color</div>
@@ -901,6 +889,12 @@
           <div class="label">Or Pick a Color</div>
           <div class="custom-color-picker">
             <div class="color-preview" id="colorPreview" style="background-color: #40E0D0;"></div>
+            <div class="swatch" id="swatch">
+              <div class="swatch-content">
+                <div class="swatch-hex" id="swatchHex">#40E0D0</div>
+                <div class="swatch-name" id="swatchName">Turquoise</div>
+              </div>
+            </div>
             <div class="picker-canvas-wrapper">
               <canvas id="colorWheel" width="220" height="220"></canvas>
               <input type="range" id="brightness" class="brightness-slider" min="0" max="100" value="100">
@@ -908,13 +902,14 @@
             <div class="color-controls">
               <div class="color-value" id="colorHex">#40E0D0</div>
               <button id="copyHex" class="btn" type="button">Copy Hex</button>
+              <button id="randomBtn" class="btn">Random Color</button>
             </div>
           </div>
         </div>
         
-        <div style="display:flex;gap:clamp(6px, 1.5vw, 8px);flex-wrap:wrap;">
+        <!-- <div style="display:flex;gap:clamp(6px, 1.5vw, 8px);flex-wrap:wrap;">
           <button id="randomBtn" class="btn">Random Color</button>
-        </div>
+        </div> -->
         
         <div id="error" class="error" role="alert" aria-live="polite"></div>
       </div>
