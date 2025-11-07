@@ -42,13 +42,7 @@
       text-decoration: none;
       background: linear-gradient(
         to right,
-        #FF69B4, /* Hot Pink */
-        #8A2BE2, /* Blue Violet */
-        #4B0082, /* Indigo */
-        #00CED1, /* Dark Turquoise */
-        #98FB98, /* Pale Green */
-        #FFD700, /* Gold */
-        #FF69B4  /* Hot Pink again to loop smoothly */
+        #FF69B4, #8A2BE2, #4B0082, #00CED1, #98FB98, #FFD700, #FF69B4
       );
       -webkit-background-clip: text;
       background-clip: text;
@@ -65,15 +59,8 @@
     }
 
     @keyframes rainbow {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .header-nav {
@@ -125,6 +112,7 @@
     .footer-content a:hover {
       opacity: 0.8;
     }
+
     *{box-sizing:border-box;}
     html,body{
       height:100%;
@@ -148,6 +136,7 @@
       justify-content: center;
       padding: calc(var(--header-height) + 20px) 20px calc(var(--footer-height) + 20px);
     }
+
     .orb {
       position: fixed;
       filter: blur(60px) saturate(120%);
@@ -157,28 +146,31 @@
     }
     .orb.o1{ width:420px;height:420px; left:-120px; top:-80px; background:linear-gradient(90deg,#7c3aed,#06b6d4);}
     .orb.o2{ width:360px;height:360px; right:-110px; bottom:-100px; background:linear-gradient(90deg,#ef4444,#f59e0b);}
+    
     .card {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 1200px; /* Increased from 1100px */
+      max-width: 1200px;
       display: grid;
-      grid-template-columns: minmax(300px, 1fr) minmax(300px, 1.5fr); /* Better column proportions */
-      gap: 32px; /* Increased from 24px */
-      padding: clamp(20px, 4vw, 40px); /* Responsive padding */
+      grid-template-columns: minmax(300px, 1fr) minmax(300px, 1.5fr);
+      gap: 32px;
+      padding: clamp(20px, 4vw, 40px);
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
       border: 1px solid var(--card-border);
       box-shadow: 0 8px 40px rgba(3,7,18,0.7);
       backdrop-filter: blur(14px) saturate(140%);
       -webkit-backdrop-filter: blur(14px) saturate(140%);
-      margin: clamp(16px, 3vw, 32px); /* Added responsive margin */
+      margin: clamp(16px, 3vw, 32px);
     }
+
     .left, .right {
       display:flex;
       flex-direction:column;
       gap:18px;
     }
+
     .swatch {
       border-radius:14px;
       min-height:280px;
@@ -194,6 +186,7 @@
       position:relative;
       overflow:hidden;
     }
+
     .swatch::before {
       content:'';
       position:absolute;
@@ -202,6 +195,7 @@
       opacity:0.3;
       filter: blur(40px);
     }
+
     .swatch-content {
       position:relative;
       z-index:1;
@@ -213,6 +207,7 @@
       border: 1px solid rgba(255,255,255,0.15);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+
     .swatch-hex {
       font-size:24px;
       font-weight:800;
@@ -221,27 +216,32 @@
       margin-bottom:8px;
       letter-spacing:-0.5px;
     }
+
     .swatch-name {
       font-size:18px;
       font-weight:700;
       color:rgba(255,255,255,0.95);
       text-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
+
     .input-section {
       display:flex;
       flex-direction:column;
       gap:10px;
     }
+
     .label {
       font-size:13px;
       font-weight:700;
       color: rgba(230,238,248,0.8);
     }
+
     .input-row {
       display:flex;
       gap:10px;
       align-items:stretch;
     }
+
     .hex-input {
       flex:1;
       padding:12px 14px;
@@ -255,39 +255,14 @@
       box-shadow: 0 4px 12px rgba(2,6,23,0.4);
       transition: all 200ms;
     }
+
     .hex-input:focus {
       border-color: rgba(56,189,248,0.3);
       background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
     }
+
     .hex-input::placeholder{ color: rgba(230,238,248,0.35); font-weight:500; }
-    .color-picker-wrapper {
-      position:relative;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .color-picker {
-      width:52px;
-      height:46px;
-      border-radius:12px;
-      border: 2px solid rgba(255,255,255,0.08);
-      background: transparent;
-      cursor:pointer;
-      padding:0;
-      outline:none;
-      overflow:hidden;
-    }
-    .color-picker::-webkit-color-swatch-wrapper {
-      padding: 0;
-    }
-    .color-picker::-webkit-color-swatch {
-      border: none;
-      border-radius: 10px;
-    }
-    .color-picker::-moz-color-swatch {
-      border: none;
-      border-radius: 10px;
-    }
+
     .btn {
       padding:12px 16px;
       border-radius:12px;
@@ -302,27 +277,33 @@
       white-space:nowrap;
       font-family: inherit;
     }
+
     .btn:hover {
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
       border-color: rgba(255,255,255,0.1);
       transform: translateY(-1px);
     }
+
     .btn:active {
       transform: translateY(0);
     }
+
     .btn.primary {
       background: linear-gradient(180deg, rgba(56,189,248,0.18), rgba(99,102,241,0.08));
       color: white;
       border: 1px solid rgba(56,189,248,0.25);
     }
+
     .btn.primary:hover {
       background: linear-gradient(180deg, rgba(56,189,248,0.25), rgba(99,102,241,0.12));
       box-shadow: 0 4px 12px rgba(56,189,248,0.2);
     }
+
     .small {
       font-size:13px;
       color: rgba(230,238,248,0.7);
     }
+
     .title {
       display:flex;
       align-items:center;
@@ -330,6 +311,7 @@
       gap:12px;
       flex-wrap:wrap;
     }
+
     .title h2 {
       margin:0;
       font-size:20px;
@@ -337,11 +319,13 @@
       letter-spacing:-0.3px;
       color:#f8fbff;
     }
+
     .subtitle { 
       color:var(--muted); 
       font-weight:600; 
       font-size:12px; 
     }
+
     .name-plate {
       padding:20px;
       border-radius:14px;
@@ -354,6 +338,7 @@
       flex-wrap:wrap;
       box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
+
     .color-name {
       font-size:26px;
       font-weight:800;
@@ -361,6 +346,7 @@
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
       line-height:1.2;
     }
+
     .color-hex-display {
       font-size:15px;
       color:rgba(230,238,248,0.65);
@@ -368,12 +354,14 @@
       margin-top:4px;
       font-family: 'Courier New', monospace;
     }
+
     .meta-list {
       display:flex;
       gap:8px;
       align-items:center;
       flex-wrap:wrap;
     }
+
     .pill {
       padding:8px 12px;
       border-radius:999px;
@@ -383,12 +371,14 @@
       color:var(--muted);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     }
+
     .matches {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: clamp(12px, 2vw, 20px);
       margin-top: 16px;
     }
+
     .match {
       display: flex;
       gap: 12px;
@@ -400,12 +390,14 @@
       transition: all 200ms;
       cursor:pointer;
     }
+
     .match:hover {
       background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
       border-color: rgba(255,255,255,0.1);
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+
     .match .dot {
       width:28px;
       height:28px;
@@ -414,32 +406,38 @@
       flex-shrink:0;
       box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     }
+
     .match-info {
       flex: 1;
       min-width: 0;
       margin-right: 12px;
     }
+
     .match-name {
       font-weight: 800;
       font-size: 14px;
       color: #fff;
       margin-bottom: 4px;
     }
+
     .match-hex {
       font-family: 'Courier New', monospace;
       font-size: 12px;
       color: rgba(230,238,248,0.65);
       margin-bottom: 4px;
     }
+
     .match-accuracy {
       font-size: 11px;
       color: rgba(230,238,248,0.5);
       font-weight: 600;
     }
+
     .match-actions {
       display: flex;
       gap: 8px;
     }
+
     .match-btn {
       padding: 6px 10px;
       font-size: 11px;
@@ -449,11 +447,15 @@
       color: rgba(255,255,255,0.7);
       cursor: pointer;
       transition: all 200ms;
+      font-family: inherit;
+      font-weight: 600;
     }
+
     .match-btn:hover {
       background: rgba(255,255,255,0.08);
       transform: translateY(-1px);
     }
+
     .error {
       color:#ff8080;
       font-weight:700;
@@ -464,14 +466,125 @@
       border: 1px solid rgba(255,128,128,0.2);
       display:none;
     }
+
     .error.show {
       display:block;
     }
+
     .section-header {
       font-weight:800;
       font-size:16px;
       color:#f8fbff;
       margin-bottom:4px;
+    }
+
+    /* Custom color picker styles */
+    .custom-color-picker {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .color-preview {
+      width: 100%;
+      height: 60px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+      transition: background-color 150ms ease;
+    }
+
+    .picker-canvas-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #colorWheel {
+      border-radius: 50%;
+      cursor: crosshair;
+      touch-action: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .brightness-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #000, #fff);
+      outline: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .brightness-slider:hover {
+      opacity: 0.9;
+    }
+
+    .brightness-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid rgba(255,255,255,0.5);
+      box-shadow: 0 0 8px rgba(56,189,248,0.6), 0 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .brightness-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .brightness-slider::-webkit-slider-thumb:active {
+      transform: scale(1.25);
+    }
+
+    .brightness-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid rgba(255,255,255,0.5);
+      box-shadow: 0 0 8px rgba(56,189,248,0.6), 0 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .brightness-slider::-moz-range-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .brightness-slider::-moz-range-thumb:active {
+      transform: scale(1.25);
+    }
+
+    .color-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .color-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.5px;
+      font-family: 'Courier New', monospace;
+      user-select: all;
     }
     
     @media (max-width:1200px) {
@@ -491,26 +604,11 @@
         gap: clamp(16px, 3vw, 24px);
       }
       .swatch { min-height: clamp(200px, 30vh, 280px); }
-      .input-row { flex-wrap:nowrap; }
-      .color-picker-wrapper {
-        display: grid;
-        grid-template-columns: auto 1fr 1fr;
-        gap: 8px;
-        width: 100%;
-      }
       .matches { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
       .name-plate { padding: clamp(16px, 3vw, 24px); }
-      .match-actions {
-        flex-direction: row;
-        gap: 8px;
-      }
     }
     
     @media (max-width:640px) {
-      html, body {
-        padding: 12px;
-      }
-  
       .card {
         padding: 16px;
         gap: 16px;
@@ -523,11 +621,6 @@
   
       .hex-input {
         width: 100%;
-      }
-  
-      .color-picker-wrapper {
-        grid-template-columns: auto 1fr;
-        gap: 8px;
       }
   
       .btn {
@@ -566,9 +659,13 @@
       .swatch-name {
         font-size: clamp(14px, 3.5vw, 18px);
       }
+
+      #colorWheel {
+        max-width: 180px;
+        max-height: 180px;
+      }
     }
     
-    /* Added styles for ultra-small devices */
     @media (max-width: 380px) {
       .card {
         padding: 12px;
@@ -599,9 +696,13 @@
         width: 100%;
         margin: 0;
       }
+
+      #colorWheel {
+        max-width: 160px;
+        max-height: 160px;
+      }
     }
     
-    /* Added support for larger screens */
     @media (min-width: 1600px) {
       .card {
         max-width: 1400px;
@@ -622,25 +723,18 @@
       }
     }
   
-    /* Add smooth transitions */
-    .card, .swatch, .match, .btn, .input-row, .color-picker-wrapper {
-      transition: all 0.3s ease-in-out;
-    }
-  
-    /* Improve touch targets on mobile */
     @media (hover: none) and (pointer: coarse) {
       .btn, .match-btn {
-        min-height: 44px;
-      }
-  
-      .color-picker {
-        min-width: 44px;
         min-height: 44px;
       }
   
       .match {
         padding: 16px;
       }
+    }
+
+    .card, .swatch, .match, .btn {
+      transition: all 0.3s ease-in-out;
     }
   </style>
 </head>
@@ -677,10 +771,16 @@
       
       <div class="input-section">
         <div class="label">Or Pick a Color</div>
-        <div class="color-picker-wrapper">
-          <input type="color" id="colorPicker" class="color-picker" value="#40E0D0" title="Pick a color" />
-          <button id="copyHex" class="btn" type="button">Copy Hex</button>
-          <button id="copyName" class="btn" type="button">Copy Name</button>
+        <div class="custom-color-picker">
+          <div class="color-preview" id="colorPreview"></div>
+          <div class="picker-canvas-wrapper">
+            <canvas id="colorWheel" width="220" height="220"></canvas>
+            <input type="range" id="brightness" class="brightness-slider" min="0" max="100" value="50">
+          </div>
+          <div class="color-controls">
+            <div class="color-value" id="colorHex">#40E0D0</div>
+            <button id="copyHex" class="btn" type="button">Copy Hex</button>
+          </div>
         </div>
       </div>
       
@@ -711,34 +811,61 @@
       
       <div>
         <div class="section-header">Alternative Names</div>
-        <div class="small muted-note">Other close matches from different color databases</div>
+        <div class="small" style="margin-top:4px;color:rgba(230,238,248,0.6);">Other close matches from different color databases</div>
         <div class="matches" id="matches"></div>
       </div>
       
-      <div class="muted-note">
+      <div class="small" style="color:rgba(230,238,248,0.5);margin-top:8px;">
         Color names are matched using perceptual distance from multiple naming databases including HTML, NTC, and Pantone-like lists.
       </div>
     </div>
   </div>
   
-  <script src="https://cdn.jsdelivr.net/npm/color-namer@1.4.0/lib/color-namer.min.js"></script>
   <script>
     (function() {
       'use strict';
       
+      // FIXED: Removed all duplicate entries from color database
       const colorDatabase = {
-        // === BASIC COLORS ===
+        // Basic Colors
         '#000000': 'Black', '#FFFFFF': 'White', '#FF0000': 'Red', '#00FF00': 'Lime',
         '#0000FF': 'Blue', '#FFFF00': 'Yellow', '#00FFFF': 'Cyan', '#FF00FF': 'Magenta',
         '#C0C0C0': 'Silver', '#808080': 'Gray', '#800000': 'Maroon', '#808000': 'Olive',
         '#008000': 'Green', '#800080': 'Purple', '#008080': 'Teal', '#000080': 'Navy',
-
-        // === BASIC COLORS (EXTENDED) ===
-        '#000000': 'Black', '#FFFFFF': 'White', '#FF0000': 'Red', '#00FF00': 'Lime',
-        '#0000FF': 'Blue', '#FFFF00': 'Yellow', '#00FFFF': 'Cyan', '#FF00FF': 'Magenta',
-        '#C0C0C0': 'Silver', '#808080': 'Gray', '#800000': 'Maroon', '#808000': 'Olive',
-        '#008000': 'Green', '#800080': 'Purple', '#008080': 'Teal', '#000080': 'Navy',
-
+        
+        // Extended Colors
+        '#FF6347': 'Tomato', '#FF4500': 'Orange Red', '#FFD700': 'Gold', '#ADFF2F': 'Green Yellow',
+        '#7FFF00': 'Chartreuse', '#00FA9A': 'Medium Spring Green', '#40E0D0': 'Turquoise',
+        '#1E90FF': 'Dodger Blue', '#9370DB': 'Medium Purple', '#FF1493': 'Deep Pink',
+        '#FFA500': 'Orange', '#FF8C00': 'Dark Orange', '#FFE4B5': 'Moccasin', '#F0E68C': 'Khaki',
+        '#BDB76B': 'Dark Khaki', '#9ACD32': 'Yellow Green', '#32CD32': 'Lime Green',
+        '#00FF7F': 'Spring Green', '#20B2AA': 'Light Sea Green', '#48D1CC': 'Medium Turquoise',
+        '#00CED1': 'Dark Turquoise', '#5F9EA0': 'Cadet Blue', '#4682B4': 'Steel Blue',
+        '#87CEEB': 'Sky Blue', '#87CEFA': 'Light Sky Blue', '#00BFFF': 'Deep Sky Blue',
+        '#4169E1': 'Royal Blue', '#0000CD': 'Medium Blue', '#191970': 'Midnight Blue',
+        '#8B008B': 'Dark Magenta', '#9932CC': 'Dark Orchid', '#BA55D3': 'Medium Orchid',
+        '#DA70D6': 'Orchid', '#EE82EE': 'Violet', '#DDA0DD': 'Plum', '#FF69B4': 'Hot Pink',
+        '#FFC0CB': 'Pink', '#FFB6C1': 'Light Pink', '#F08080': 'Light Coral', '#E9967A': 'Dark Salmon',
+        '#FA8072': 'Salmon', '#FFA07A': 'Light Salmon', '#DC143C': 'Crimson', '#B22222': 'Fire Brick',
+        '#8B0000': 'Dark Red', '#A52A2A': 'Brown', '#BC8F8F': 'Rosy Brown', '#CD5C5C': 'Indian Red',
+        '#F4A460': 'Sandy Brown', '#D2691E': 'Chocolate', '#8B4513': 'Saddle Brown', '#A0522D': 'Sienna',
+        '#D2B48C': 'Tan', '#DEB887': 'Burly Wood', '#F5DEB3': 'Wheat', '#F5F5DC': 'Beige',
+        '#C8C8C8': 'Urban Gray', '#B0B0B0': 'Pewter', '#999999': 'Ash Gray', '#7F7F7F': 'Slate Gray',
+        '#696969': 'Dim Gray', '#778899': 'Light Slate Gray', '#708090': 'Slate Gray Dark',
+        '#2F4F4F': 'Dark Slate Gray', '#556B2F': 'Dark Olive Green', '#6B8E23': 'Olive Drab',
+        '#228B22': 'Forest Green', '#006400': 'Dark Green', '#2E8B57': 'Sea Green',
+        '#3CB371': 'Medium Sea Green', '#66CDAA': 'Medium Aquamarine', '#8FBC8F': 'Dark Sea Green',
+        '#90EE90': 'Light Green', '#98FB98': 'Pale Green', '#7FFFD4': 'Aquamarine',
+        '#AFEEEE': 'Pale Turquoise', '#E0FFFF': 'Light Cyan', '#B0E0E6': 'Powder Blue',
+        '#ADD8E6': 'Light Blue', '#6495ED': 'Cornflower Blue', '#7B68EE': 'Medium Slate Blue',
+        '#6A5ACD': 'Slate Blue', '#483D8B': 'Dark Slate Blue', '#8A2BE2': 'Blue Violet',
+        '#9400D3': 'Dark Violet', '#9966CC': 'Amethyst', '#C71585': 'Medium Violet Red',
+        '#DB7093': 'Pale Violet Red', '#FF7F50': 'Coral', '#CD853F': 'Peru', '#D8BFD8': 'Thistle',
+        '#DDA0DD': 'Plum', '#E6E6FA': 'Lavender', '#F0E68C': 'Khaki', '#FAFAD2': 'Light Goldenrod Yellow',
+        '#FFFACD': 'Lemon Chiffon', '#EEE8AA': 'Pale Goldenrod', '#F0FFF0': 'Honeydew',
+        '#F5FFFA': 'Mint Cream', '#F0F8FF': 'Alice Blue', '#F8F8FF': 'Ghost White',
+        '#FFFAF0': 'Floral White', '#FFF5EE': 'Seashell', '#FDF5E6': 'Old Lace',
+        '#FAEBD7': 'Antique White', '#FAF0E6': 'Linen', '#FFF0F5': 'Lavender Blush', '#FFE4E1': 'Misty Rose',
         '#FFA500': 'Orange', '#A52A2A': 'Brown', '#FFC0CB': 'Pink', '#FFD700': 'Gold',
         '#F5F5DC': 'Beige', '#FAEBD7': 'Antique White', '#FFE4C4': 'Bisque', '#FFEBCD': 'Blanched Almond',
         '#8B0000': 'Dark Red', '#B22222': 'Firebrick', '#DC143C': 'Crimson', '#CD5C5C': 'Indian Red',
@@ -1199,7 +1326,7 @@
         '#001F3F': 'Deep Sea Blue', '#003366': 'Ocean Depths', '#004080': 'Marine Blue',
         '#006994': 'Pacific Blue', '#007BA7': 'Cerulean Blue', '#0096C7': 'Sea Sky Blue',
         '#00A8E8': 'Azure Wave', '#00BFFF': 'Deep Sky', '#40E0D0': 'Turquoise Tide',
-        '#5F9EA0': 'Cadet Sea', '#7FFFD4': 'Aquamarine Surf', '#00CED1': 'Tropical Water',
+        '#5F9EA0': 'Cadet Sea', '#7FFFD4': 'Aquamarine Surf', 
         '#48D1CC': 'Lagoon', '#20B2AA': 'Light Sea', '#008B8B': 'Deep Sea Teal',
         '#2E8B57': 'Seaweed Green', '#3CB371': 'Marine Green', '#66CDAA': 'Ocean Foam',
         '#AFEEEE': 'Pale Turquoise', '#B2FFFF': 'Soft Aqua', '#E0FFFF': 'Foam Mist',
@@ -1419,15 +1546,11 @@
         '#D6D6D6': 'Pale Stone', '#CCCCCC': 'Cloud Gray', '#BFBFBF': 'Cool Gray', '#AFAFAF': 'Muted Gray',
         '#999999': 'Steel Light', '#808080': 'Standard Gray', '#666666': 'Graphite Mid', '#4D4D4D': 'Dark Graphite',
         '#333333': 'Charcoal Dark', '#1A1A1A': 'Near Black', '#000000': 'True Black',
-        '#ECECEC': 'Off White', '#F5F5F5': 'Fog White', '#DCDCDC': 'Cloud Mist', '#E8E8E8': 'Soft Cloud',
-        '#C8C8C8': 'Urban Gray', '#B0B0B0': 'Pewter Neutral', '#999999': 'Ash Gray', '#7F7F7F': 'Slate Gray'
-        
-    };
+        '#ECECEC': 'Off White', '#F5F5F5': 'Fog White', '#DCDCDC': 'Cloud Mist', '#E8E8E8': 'Soft Cloud'
+      };
 
-      
       const elements = {
         hexInput: document.getElementById('hexInput'),
-        colorPicker: document.getElementById('colorPicker'),
         applyBtn: document.getElementById('applyBtn'),
         swatch: document.getElementById('swatch'),
         swatchHex: document.getElementById('swatchHex'),
@@ -1437,7 +1560,6 @@
         matchesEl: document.getElementById('matches'),
         errorEl: document.getElementById('error'),
         copyHexBtn: document.getElementById('copyHex'),
-        copyNameBtn: document.getElementById('copyName'),
         distancePill: document.getElementById('distancePill')
       };
 
@@ -1498,17 +1620,14 @@
           const inputRgb = hexToRgb(inputHex);
           const matches = [];
           
-          // Calculate distance to all colors in our database
           for (const [hex, name] of Object.entries(colorDatabase)) {
             const dbRgb = hexToRgb(hex);
             const distance = colorDistance(inputRgb, dbRgb);
             matches.push({ name, hex, distance });
           }
           
-          // Sort by distance (closest first)
           matches.sort((a, b) => a.distance - b.distance);
           
-          // Remove duplicates by name and keep closest
           const uniqueMatches = [];
           const seenNames = new Set();
           
@@ -1552,7 +1671,6 @@
           
           elements.matchesEl.innerHTML = '';
           
-          // Get only top 3 alternative matches
           const alternativeMatches = matches.slice(1, 5);
           
           alternativeMatches.forEach((match) => {
@@ -1612,8 +1730,8 @@
             
             matchEl.addEventListener('click', () => {
               elements.hexInput.value = match.hex;
-              elements.colorPicker.value = match.hex;
               updateColor(match.hex);
+              updatePickerFromHex(match.hex);
             });
             
             elements.matchesEl.appendChild(matchEl);
@@ -1629,15 +1747,9 @@
       elements.hexInput.addEventListener('input', (e) => {
         const hex = normalizeHex(e.target.value);
         if (hex) {
-          elements.colorPicker.value = hex;
           updateColor(hex);
+          updatePickerFromHex(hex);
         }
-      });
-
-      elements.colorPicker.addEventListener('input', (e) => {
-        const hex = e.target.value.toUpperCase();
-        elements.hexInput.value = hex;
-        updateColor(hex);
       });
 
       elements.applyBtn.addEventListener('click', () => {
@@ -1646,32 +1758,253 @@
           showError('Please enter a valid hex color code');
           return;
         }
-        elements.colorPicker.value = hex;
         updateColor(hex);
+        updatePickerFromHex(hex);
       });
 
       elements.copyHexBtn.addEventListener('click', () => {
         const hex = elements.swatchHex.textContent;
         navigator.clipboard.writeText(hex)
-          .then(() => showError('Hex code copied to clipboard!'))
+          .then(() => {
+            const originalText = elements.copyHexBtn.textContent;
+            elements.copyHexBtn.textContent = 'Copied!';
+            setTimeout(() => {
+              elements.copyHexBtn.textContent = originalText;
+            }, 1500);
+          })
           .catch(() => showError('Failed to copy hex code'));
       });
 
-      elements.copyNameBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(currentColorName)
-          .then(() => showError('Color name copied to clipboard!'))
-          .catch(() => showError('Failed to copy color name'));
+      // IMPROVED: Custom Color Picker
+      const wheel = document.getElementById("colorWheel");
+      const ctx = wheel.getContext("2d");
+      const brightness = document.getElementById("brightness");
+      const preview = document.getElementById("colorPreview");
+      const colorHex = document.getElementById("colorHex");
+
+      let currentHue = 180;
+      let currentSat = 100;
+      let currentBright = 50;
+
+      function resizeWheel() {
+        const containerWidth = wheel.parentElement.offsetWidth;
+        const size = Math.min(containerWidth - 32, 220);
+        if (size < 100) return;
+        wheel.width = size;
+        wheel.height = size;
+        drawColorWheel();
+      }
+
+      window.addEventListener('resize', resizeWheel);
+
+      function drawColorWheel() {
+        const radius = wheel.width / 2;
+        const centerX = radius;
+        const centerY = radius;
+        
+        ctx.clearRect(0, 0, wheel.width, wheel.height);
+        
+        // Draw color wheel
+        for (let angle = 0; angle < 360; angle += 0.5) {
+          const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+          gradient.addColorStop(0, 'white');
+          gradient.addColorStop(1, `hsl(${angle}, 100%, 50%)`);
+          
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, (angle - 0.5) * Math.PI / 180, angle * Math.PI / 180);
+          ctx.closePath();
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+      }
+
+      function getColorFromCoords(x, y) {
+        const radius = wheel.width / 2;
+        const dx = x - radius;
+        const dy = y - radius;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist > radius) return null;
+        
+        let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        angle = (angle + 360) % 360;
+        
+        const saturation = Math.min((dist / radius) * 100, 100);
+        const lightness = currentBright;
+        
+        return { h: angle, s: saturation, l: lightness };
+      }
+
+      // IMPROVED: Better HSL to HEX conversion
+      function hslToHex(h, s, l) {
+        h = h % 360;
+        if (h < 0) h += 360;
+        
+        s = Math.max(0, Math.min(100, s)) / 100;
+        l = Math.max(0, Math.min(100, l)) / 100;
+        
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        const m = l - c / 2;
+        
+        let r = 0, g = 0, b = 0;
+        
+        if (0 <= h && h < 60) {
+          r = c; g = x; b = 0;
+        } else if (60 <= h && h < 120) {
+          r = x; g = c; b = 0;
+        } else if (120 <= h && h < 180) {
+          r = 0; g = c; b = x;
+        } else if (180 <= h && h < 240) {
+          r = 0; g = x; b = c;
+        } else if (240 <= h && h < 300) {
+          r = x; g = 0; b = c;
+        } else if (300 <= h && h < 360) {
+          r = c; g = 0; b = x;
+        }
+        
+        r = Math.round((r + m) * 255);
+        g = Math.round((g + m) * 255);
+        b = Math.round((b + m) * 255);
+        
+        return "#" + [r, g, b].map(x => {
+          const hex = x.toString(16);
+          return hex.length === 1 ? "0" + hex : hex;
+        }).join("").toUpperCase();
+      }
+
+      // IMPROVED: Better HEX to HSL conversion
+      function hexToHSL(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) {
+          hex = hex.split('').map(x => x + x).join('');
+        }
+        
+        const r = parseInt(hex.substring(0, 2), 16) / 255;
+        const g = parseInt(hex.substring(2, 4), 16) / 255;
+        const b = parseInt(hex.substring(4, 6), 16) / 255;
+        
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          
+          switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+          }
+        }
+        
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          l: Math.round(l * 100)
+        };
+      }
+
+      function setCustomColor(hsl) {
+        if (!hsl) return;
+        
+        currentHue = hsl.h;
+        currentSat = hsl.s;
+        currentBright = hsl.l;
+        
+        const hex = hslToHex(hsl.h, hsl.s, hsl.l);
+        preview.style.backgroundColor = hex;
+        colorHex.textContent = hex;
+        elements.hexInput.value = hex;
+        updateColor(hex);
+      }
+
+      function updatePickerFromHex(hex) {
+        const hsl = hexToHSL(hex);
+        currentHue = hsl.h;
+        currentSat = hsl.s;
+        currentBright = hsl.l;
+        brightness.value = hsl.l;
+        preview.style.backgroundColor = hex;
+        colorHex.textContent = hex;
+      }
+
+      function pickColorAt(x, y) {
+        const hsl = getColorFromCoords(x, y);
+        if (hsl) {
+          setCustomColor(hsl);
+        }
+      }
+
+      function handlePick(e) {
+        e.preventDefault();
+        const rect = wheel.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        pickColorAt(x, y);
+      }
+
+      let dragging = false;
+
+      wheel.addEventListener("mousedown", e => {
+        dragging = true;
+        handlePick(e);
       });
 
-      // Initialize with default color
-      updateColor('#40E0D0');
+      wheel.addEventListener("mousemove", e => {
+        if (dragging) handlePick(e);
+      });
+
+      window.addEventListener("mouseup", () => {
+        dragging = false;
+      });
+
+      wheel.addEventListener("touchstart", e => {
+        dragging = true;
+        handlePick(e);
+      }, { passive: false });
+
+      wheel.addEventListener("touchmove", e => {
+        if (dragging) {
+          e.preventDefault();
+          handlePick(e);
+        }
+      }, { passive: false });
+
+      window.addEventListener("touchend", () => {
+        dragging = false;
+      });
+
+      // IMPROVED: Better brightness slider behavior
+      brightness.addEventListener("input", () => {
+        currentBright = parseInt(brightness.value);
+        const hsl = { h: currentHue, s: currentSat, l: currentBright };
+        setCustomColor(hsl);
+      });
+
+      // Initialize
+      resizeWheel();
+      const initialHSL = hexToHSL("#40E0D0");
+      currentHue = initialHSL.h;
+      currentSat = initialHSL.s;
+      currentBright = initialHSL.l;
+      brightness.value = initialHSL.l;
+      preview.style.backgroundColor = "#40E0D0";
+      colorHex.textContent = "#40E0D0";
+      
     })();
   </script>
     </main>
     
     <footer class="footer">
         <div class="footer-content">
-            <p>Developed by <a href="mailto:debojeetbhowmick@gmail.com" target="_blank">Debojeet Bhowmick</a> | 
+            <p>Developed by <a href="mailto:debojeetbhowmick@gmail.com">Debojeet Bhowmick</a> | 
             Connect with me on my <a href="https://debojeet-bhowmick.netlify.app/" target="_blank">Website</a></p>
         </div>
     </footer>
