@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5" />
   <title>ChromaScope | By Debojeet Bhowmick</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
@@ -14,11 +13,31 @@
       --muted: rgba(226,232,240,0.75);
       --card-border: rgba(255,255,255,0.08);
       --radius: 16px;
-      --header-height: clamp(60px, 10vh, 80px);
-      --footer-height: clamp(50px, 8vh, 60px);
+      --header-height: clamp(56px, 9vh, 72px);
+      --footer-height: clamp(48px, 7vh, 60px);
     }
     
-    /* Header Styles - Fully Responsive */
+    * { 
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(56,189,248,0.06), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(99,102,241,0.05), transparent 12%),
+                  var(--bg-1);
+      color: #e6eef8;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    /* Header */
     .header {
       position: fixed;
       top: 0;
@@ -32,12 +51,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 clamp(16px, 4vw, 32px);
+      padding: 0 clamp(12px, 3vw, 24px);
       z-index: 100;
     }
 
     .header-logo {
-      font-size: clamp(18px, 4vw, 24px);
+      font-size: clamp(16px, 3.5vw, 22px);
       font-weight: 800;
       text-decoration: none;
       background: linear-gradient(
@@ -49,13 +68,7 @@
       color: transparent;
       background-size: 300% auto;
       animation: rainbow 8s ease-in-out infinite;
-      transform: translateZ(0);
-      will-change: background-position;
-      transition: transform 0.3s ease;
-    }
-
-    .header-logo:hover {
-      transform: scale(1.05) translateZ(0);
+      white-space: nowrap;
     }
 
     @keyframes rainbow {
@@ -65,7 +78,7 @@
 
     .header-nav {
       display: flex;
-      gap: clamp(12px, 3vw, 24px);
+      gap: clamp(10px, 2.5vw, 20px);
       align-items: center;
     }
 
@@ -73,24 +86,27 @@
       color: var(--muted);
       text-decoration: none;
       font-weight: 600;
-      font-size: clamp(13px, 2.5vw, 15px);
+      font-size: clamp(12px, 2.2vw, 14px);
       transition: color 0.2s ease;
-      min-height: 44px;
+      min-height: 40px;
+      min-width: 40px;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
 
     .header-nav a:hover {
       color: var(--accent);
     }
 
-    /* Footer Styles - Fully Responsive */
+    /* Footer */
     .footer {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      height: var(--footer-height);
+      min-height: var(--footer-height);
+      height: auto;
       background: linear-gradient(0deg, rgba(10,14,23,0.95), rgba(10,14,23,0.85));
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
@@ -98,52 +114,43 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 clamp(16px, 4vw, 32px);
+      padding: 8px clamp(12px, 3vw, 24px);
       z-index: 100;
     }
 
     .footer-content {
       color: var(--muted);
-      font-size: clamp(11px, 2vw, 14px);
+      font-size: clamp(10px, 1.8vw, 13px);
       text-align: center;
-      line-height: 1.5;
+      line-height: 1.4;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+
+    .footer-content p {
+      margin: 0;
     }
 
     .footer-content a {
       color: var(--accent);
       text-decoration: none;
       transition: opacity 0.2s ease;
+      white-space: nowrap;
     }
 
     .footer-content a:hover {
       opacity: 0.8;
     }
 
-    * { box-sizing: border-box; }
-    
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(56,189,248,0.06), transparent 8%),
-                  radial-gradient(1000px 500px at 90% 90%, rgba(99,102,241,0.05), transparent 12%),
-                  var(--bg-1);
-      color: #e6eef8;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
+    /* Main Layout */
     main {
-      flex: 1;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: calc(var(--header-height) + clamp(12px, 2vh, 20px)) clamp(12px, 3vw, 20px) calc(var(--footer-height) + clamp(12px, 2vh, 20px));
+      padding: calc(var(--header-height) + 12px) 8px calc(var(--footer-height) + 12px);
       width: 100%;
+      overflow-x: hidden;
     }
 
     .orb {
@@ -154,123 +161,62 @@
       z-index: 0;
     }
     .orb.o1 { 
-      width: clamp(250px, 40vw, 420px); 
-      height: clamp(250px, 40vw, 420px); 
+      width: clamp(200px, 35vw, 350px); 
+      height: clamp(200px, 35vw, 350px); 
       left: -10%; 
       top: -5%; 
       background: linear-gradient(90deg, #7c3aed, #06b6d4);
     }
     .orb.o2 { 
-      width: clamp(200px, 35vw, 360px); 
-      height: clamp(200px, 35vw, 360px); 
+      width: clamp(180px, 30vw, 300px); 
+      height: clamp(180px, 30vw, 300px); 
       right: -8%; 
       bottom: -5%; 
       background: linear-gradient(90deg, #ef4444, #f59e0b);
     }
 
-    /* Card - Ultra Responsive */
+    /* Card Container - FIXED */
     .card {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: min(1400px, calc(100vw - clamp(16px, 4vw, 40px)));
+      max-width: calc(100vw - 16px);
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(16px, 3vw, 32px);
-      padding: clamp(16px, 3vw, 40px);
-      border-radius: var(--radius);
+      gap: clamp(12px, 2.5vw, 24px);
+      padding: clamp(12px, 2.5vw, 32px);
+      border-radius: clamp(12px, 2vw, 16px);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
       border: 1px solid var(--card-border);
       box-shadow: 0 8px 40px rgba(3,7,18,0.7);
       backdrop-filter: blur(14px) saturate(140%);
       -webkit-backdrop-filter: blur(14px) saturate(140%);
+      overflow: hidden;
     }
 
-    /* Tabs - Responsive with Horizontal Scroll on Mobile */
-    .tabs {
-      display: flex;
-      gap: clamp(6px, 1.5vw, 12px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding-bottom: clamp(8px, 2vw, 16px);
-      margin-bottom: clamp(12px, 2.5vw, 20px);
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.1) transparent;
+    /* Left & Right Columns */
+    .left, .right {
+      width: 100%;
+      min-width: 0; /* Important for preventing overflow */
+      overflow: hidden;
     }
 
-    .tabs::-webkit-scrollbar {
-      height: 4px;
-    }
-
-    .tabs::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .tabs::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-    }
-
-    .tab {
-      padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
-      border-radius: 10px;
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-weight: 700;
-      font-size: clamp(11px, 2.2vw, 14px);
-      transition: all 200ms;
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tab:hover {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-      border-color: rgba(255,255,255,0.06);
-    }
-
-    .tab.active {
-      background: linear-gradient(180deg, rgba(56,189,248,0.15), rgba(99,102,241,0.08));
-      color: white;
-      border-color: rgba(56,189,248,0.25);
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 300ms ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Swatch - Responsive Height */
+    /* Swatch - Improved */
     .swatch {
-      border-radius: 14px;
-      min-height: clamp(180px, 30vh, 280px);
+      border-radius: clamp(10px, 2vw, 14px);
+      min-height: clamp(140px, 25vh, 220px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: clamp(16px, 3vw, 20px);
+      padding: clamp(12px, 2.5vw, 18px);
       border: 1px solid rgba(255,255,255,0.06);
       background: #40E0D0;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 4px 20px rgba(0,0,0,0.3);
       transition: background 300ms ease;
       position: relative;
       overflow: hidden;
+      margin-bottom: clamp(12px, 2.5vw, 16px);
     }
 
     .swatch::before {
@@ -288,63 +234,69 @@
       text-align: center;
       backdrop-filter: blur(12px);
       background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-      border-radius: 12px;
-      padding: clamp(12px, 3vw, 16px) clamp(16px, 4vw, 24px);
+      border-radius: clamp(8px, 1.5vw, 12px);
+      padding: clamp(10px, 2.5vw, 14px) clamp(14px, 3.5vw, 20px);
       border: 1px solid rgba(255,255,255,0.15);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 100%;
     }
 
     .swatch-hex {
-      font-size: clamp(18px, 4vw, 24px);
+      font-size: clamp(16px, 3.5vw, 22px);
       font-weight: 800;
       color: #fff;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.5px;
+      word-break: break-all;
     }
 
     .swatch-name {
-      font-size: clamp(14px, 3vw, 18px);
+      font-size: clamp(13px, 2.8vw, 17px);
       font-weight: 700;
       color: rgba(255,255,255,0.95);
       text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      word-break: break-word;
     }
 
-    /* Input Section - Responsive */
+    /* Input Section */
     .input-section {
       display: flex;
       flex-direction: column;
-      gap: clamp(8px, 2vw, 10px);
+      gap: clamp(6px, 1.5vw, 8px);
+      margin-bottom: clamp(10px, 2vw, 14px);
+      width: 100%;
     }
 
     .label {
-      padding-top: 10px;
-      font-size: clamp(12px, 2.2vw, 13px);
+      font-size: clamp(11px, 2vw, 13px);
       font-weight: 700;
       color: rgba(230,238,248,0.8);
+      padding-top: 4px;
     }
 
     .input-row {
       display: flex;
-      gap: clamp(8px, 2vw, 10px);
+      gap: clamp(6px, 1.5vw, 8px);
       align-items: stretch;
-      flex-wrap: wrap;
+      width: 100%;
     }
 
     .hex-input {
       flex: 1;
-      min-width: min(200px, 100%);
-      padding: clamp(10px, 2.5vw, 12px) clamp(12px, 3vw, 14px);
-      border-radius: 12px;
+      min-width: 0;
+      padding: clamp(9px, 2vw, 11px) clamp(10px, 2.5vw, 13px);
+      border-radius: clamp(8px, 1.5vw, 12px);
       border: 1px solid rgba(255,255,255,0.06);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
       color: #e6eef8;
-      font-size: clamp(13px, 2.5vw, 15px);
+      font-size: clamp(12px, 2.3vw, 14px);
       font-weight: 600;
       outline: none;
       box-shadow: 0 4px 12px rgba(2,6,23,0.4);
       transition: all 200ms;
-      min-height: 44px;
+      min-height: 42px;
+      font-family: inherit;
     }
 
     .hex-input:focus {
@@ -357,24 +309,25 @@
       font-weight: 500;
     }
 
-    /* Buttons - Touch-Friendly */
+    /* Buttons */
     .btn {
-      padding: clamp(10px, 2.5vw, 12px) clamp(14px, 3vw, 16px);
-      border-radius: 12px;
+      padding: clamp(9px, 2vw, 11px) clamp(12px, 2.5vw, 14px);
+      border-radius: clamp(8px, 1.5vw, 12px);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
       border: 1px solid rgba(255,255,255,0.06);
       color: var(--muted);
       cursor: pointer;
       font-weight: 700;
-      font-size: clamp(12px, 2.2vw, 13px);
+      font-size: clamp(11px, 2vw, 13px);
       user-select: none;
       transition: all 200ms;
       white-space: nowrap;
       font-family: inherit;
-      min-height: 44px;
+      min-height: 42px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .btn:hover {
@@ -398,17 +351,19 @@
       box-shadow: 0 4px 12px rgba(56,189,248,0.2);
     }
 
-    /* Custom Color Picker - Responsive */
+    /* Custom Color Picker - FIXED */
     .custom-color-picker {
       display: flex;
       flex-direction: column;
-      gap: clamp(10px, 2.5vw, 12px);
+      gap: clamp(8px, 2vw, 10px);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
       border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: clamp(12px, 3vw, 16px);
+      border-radius: clamp(12px, 2vw, 16px);
+      padding: clamp(10px, 2.5vw, 14px);
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       backdrop-filter: blur(10px);
+      width: 100%;
+      overflow: hidden;
     }
 
     .picker-canvas-wrapper {
@@ -417,6 +372,9 @@
       flex-direction: column;
       align-items: center;
       gap: clamp(6px, 1.5vw, 8px);
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     #colorWheel {
@@ -427,10 +385,12 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       max-width: 100%;
       height: auto;
+      display: block;
     }
 
     .brightness-slider {
       width: 100%;
+      max-width: 100%;
       -webkit-appearance: none;
       height: 6px;
       border-radius: 4px;
@@ -441,8 +401,8 @@
 
     .brightness-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--accent);
       border: 2px solid rgba(255,255,255,0.4);
@@ -456,8 +416,8 @@
     }
 
     .brightness-slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--accent);
       border: 2px solid rgba(255,255,255,0.4);
@@ -470,79 +430,174 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: clamp(8px, 2vw, 10px);
+      gap: clamp(6px, 1.5vw, 8px);
       flex-wrap: wrap;
+      width: 100%;
     }
 
     .color-value {
-      font-size: clamp(13px, 2.5vw, 15px);
+      font-size: clamp(12px, 2.3vw, 14px);
       font-weight: 700;
       color: white;
       letter-spacing: 0.5px;
       font-family: 'Courier New', monospace;
       user-select: all;
+      word-break: break-all;
+      flex: 1;
+      min-width: 0;
     }
 
-    /* Pills - Responsive */
+    .button-group {
+      display: flex;
+      gap: clamp(6px, 1.5vw, 8px);
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .button-group .btn {
+      flex: 1;
+      min-width: calc(50% - 4px);
+    }
+
+    /* Tabs - FIXED */
+    .tabs {
+      display: flex;
+      gap: clamp(4px, 1vw, 8px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: clamp(6px, 1.5vw, 12px);
+      margin-bottom: clamp(10px, 2vw, 16px);
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.1) transparent;
+      scroll-snap-type: x proximity;
+    }
+
+    .tabs::-webkit-scrollbar {
+      height: 3px;
+    }
+
+    .tabs::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .tabs::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+    }
+
+    .tab {
+      padding: clamp(7px, 1.8vw, 10px) clamp(10px, 2.5vw, 16px);
+      border-radius: clamp(6px, 1.2vw, 10px);
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: clamp(10px, 2vw, 13px);
+      transition: all 200ms;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+    }
+
+    .tab:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border-color: rgba(255,255,255,0.06);
+    }
+
+    .tab.active {
+      background: linear-gradient(180deg, rgba(56,189,248,0.15), rgba(99,102,241,0.08));
+      color: white;
+      border-color: rgba(56,189,248,0.25);
+    }
+
+    .tab-content {
+      display: none;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 300ms ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pills */
     .pill {
-      padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2.5vw, 12px);
+      padding: clamp(5px, 1.2vw, 7px) clamp(8px, 2vw, 10px);
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.06);
       font-weight: 700;
-      font-size: clamp(10px, 2vw, 12px);
+      font-size: clamp(9px, 1.8vw, 11px);
       color: var(--muted);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       white-space: nowrap;
     }
 
-    /* Name Plate - Responsive */
+    /* Name Plate */
     .name-plate {
-      padding: clamp(16px, 3vw, 20px);
-      border-radius: 14px;
+      padding: clamp(12px, 2.5vw, 18px);
+      border-radius: clamp(10px, 1.8vw, 14px);
       border: 1px solid rgba(255,255,255,0.06);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: clamp(12px, 3vw, 16px);
+      gap: clamp(10px, 2.5vw, 14px);
       flex-wrap: wrap;
       box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      width: 100%;
+      overflow: hidden;
     }
 
     .color-name {
-      font-size: clamp(20px, 4.5vw, 26px);
+      font-size: clamp(18px, 4vw, 24px);
       font-weight: 800;
       color: #fff;
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
       line-height: 1.2;
       word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .color-hex-display {
-      font-size: clamp(13px, 2.5vw, 15px);
+      font-size: clamp(12px, 2.3vw, 14px);
       color: rgba(230,238,248,0.65);
       font-weight: 600;
       margin-top: 4px;
       font-family: 'Courier New', monospace;
+      word-break: break-all;
     }
 
     .meta-list {
       display: flex;
-      gap: clamp(6px, 1.5vw, 8px);
+      gap: clamp(5px, 1.2vw, 7px);
       align-items: center;
       flex-wrap: wrap;
     }
 
-    /* Error Message - Responsive */
+    /* Error Message */
     .error {
       color: #ff8080;
       font-weight: 700;
-      font-size: clamp(12px, 2.2vw, 13px);
-      padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2.5vw, 12px);
+      font-size: clamp(11px, 2vw, 13px);
+      padding: clamp(6px, 1.5vw, 8px) clamp(8px, 2vw, 10px);
       border-radius: 8px;
       background: rgba(255,128,128,0.1);
       border: 1px solid rgba(255,128,128,0.2);
       display: none;
+      margin-top: clamp(8px, 1.5vw, 10px);
     }
 
     .error.show {
@@ -551,30 +606,33 @@
 
     .section-header {
       font-weight: 800;
-      font-size: clamp(14px, 3vw, 16px);
+      font-size: clamp(13px, 2.8vw, 15px);
       color: #f8fbff;
-      margin-bottom: clamp(6px, 1.5vw, 8px);
+      margin-bottom: clamp(5px, 1.2vw, 7px);
     }
 
     .small {
-      font-size: clamp(11px, 2vw, 13px);
+      font-size: clamp(10px, 1.8vw, 12px);
       color: rgba(230,238,248,0.7);
       line-height: 1.4;
     }
 
-    /* Format Grid - Responsive */
+    /* Format Grid - FIXED */
     .format-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
-      gap: clamp(12px, 2.5vw, 16px);
+      grid-template-columns: 1fr;
+      gap: clamp(10px, 2vw, 14px);
+      width: 100%;
     }
 
     .format-item {
-      padding: clamp(14px, 3vw, 16px);
-      border-radius: 12px;
+      padding: clamp(12px, 2.5vw, 14px);
+      border-radius: clamp(8px, 1.5vw, 12px);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border: 1px solid rgba(255,255,255,0.05);
       transition: all 200ms;
+      width: 100%;
+      overflow: hidden;
     }
 
     .format-item:hover {
@@ -583,38 +641,40 @@
     }
 
     .format-label {
-      font-size: clamp(11px, 2vw, 12px);
+      font-size: clamp(10px, 1.8vw, 11px);
       font-weight: 700;
       color: rgba(230,238,248,0.6);
-      margin-bottom: clamp(6px, 1.5vw, 8px);
+      margin-bottom: clamp(5px, 1.2vw, 7px);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .format-value {
-      font-size: clamp(13px, 2.5vw, 15px);
+      font-size: clamp(12px, 2.3vw, 14px);
       font-weight: 700;
       color: #fff;
       font-family: 'Courier New', monospace;
-      margin-bottom: clamp(8px, 2vw, 10px);
+      margin-bottom: clamp(7px, 1.8vw, 9px);
       word-break: break-all;
+      overflow-wrap: break-word;
     }
 
-    /* History Grid - Responsive */
+    /* History Grid - FIXED */
     .history-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(clamp(60px, 12vw, 80px), 1fr));
-      gap: clamp(8px, 2vw, 12px);
+      grid-template-columns: repeat(auto-fill, minmax(clamp(50px, 10vw, 70px), 1fr));
+      gap: clamp(6px, 1.5vw, 10px);
+      width: 100%;
     }
 
     .history-item {
       aspect-ratio: 1;
-      border-radius: 12px;
+      border-radius: clamp(8px, 1.5vw, 12px);
       border: 1px solid rgba(255,255,255,0.1);
       cursor: pointer;
       transition: all 200ms;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      min-height: 60px;
+      min-height: 50px;
     }
 
     .history-item:hover {
@@ -623,95 +683,103 @@
       border-color: rgba(255,255,255,0.2);
     }
 
-    /* Palette Grid - Responsive */
+    /* Palette Grid - FIXED */
     .palette-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-      gap: clamp(12px, 2.5vw, 16px);
+      grid-template-columns: 1fr;
+      gap: clamp(10px, 2vw, 14px);
+      width: 100%;
     }
 
     .palette-card {
-      padding: clamp(12px, 3vw, 16px);
-      border-radius: 12px;
+      padding: clamp(10px, 2.5vw, 14px);
+      border-radius: clamp(8px, 1.5vw, 12px);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border: 1px solid rgba(255,255,255,0.05);
+      width: 100%;
+      overflow: hidden;
     }
 
     .palette-title {
-      font-size: clamp(12px, 2.5vw, 14px);
+      font-size: clamp(11px, 2.3vw, 13px);
       font-weight: 700;
       color: rgba(230,238,248,0.8);
-      margin-bottom: clamp(8px, 2vw, 12px);
+      margin-bottom: clamp(7px, 1.8vw, 10px);
       text-transform: capitalize;
     }
 
     .palette-colors {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(clamp(40px, 8vw, 50px), 1fr));
-      gap: clamp(6px, 1.5vw, 8px);
+      grid-template-columns: repeat(auto-fit, minmax(clamp(35px, 7vw, 45px), 1fr));
+      gap: clamp(5px, 1.2vw, 7px);
+      width: 100%;
     }
 
     .palette-color {
       aspect-ratio: 1;
-      border-radius: 8px;
+      border-radius: clamp(6px, 1.2vw, 8px);
       border: 1px solid rgba(255,255,255,0.1);
       cursor: pointer;
       transition: all 200ms;
-      min-height: 40px;
+      min-height: 35px;
     }
 
     .palette-color:hover {
-      transform: scale(1.1);
+      transform: scale(1.08);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
-    /* Contrast Checker - Responsive */
+    /* Contrast Checker - FIXED */
     .contrast-demo {
       display: flex;
       flex-direction: column;
-      gap: clamp(12px, 2.5vw, 16px);
-      padding: clamp(16px, 3vw, 20px);
-      border-radius: 12px;
+      gap: clamp(10px, 2vw, 14px);
+      padding: clamp(12px, 2.5vw, 18px);
+      border-radius: clamp(8px, 1.5vw, 12px);
       border: 1px solid rgba(255,255,255,0.06);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      width: 100%;
+      overflow: hidden;
     }
 
     .contrast-sample {
-      padding: clamp(16px, 3vw, 20px);
-      border-radius: 10px;
+      padding: clamp(12px, 2.5vw, 18px);
+      border-radius: clamp(6px, 1.2vw, 10px);
       text-align: center;
       font-weight: 700;
-      font-size: clamp(14px, 3vw, 16px);
+      font-size: clamp(13px, 2.8vw, 15px);
       border: 1px solid rgba(255,255,255,0.1);
-      min-height: clamp(60px, 10vh, 80px);
+      min-height: clamp(50px, 8vh, 70px);
       display: flex;
       align-items: center;
       justify-content: center;
+      word-break: break-word;
     }
 
     .contrast-results {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-      gap: clamp(10px, 2vw, 12px);
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(8px, 1.8vw, 10px);
+      width: 100%;
     }
 
     .contrast-result {
-      padding: clamp(10px, 2.5vw, 12px);
-      border-radius: 8px;
+      padding: clamp(8px, 2vw, 10px);
+      border-radius: clamp(6px, 1.2vw, 8px);
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.05);
       text-align: center;
     }
 
     .contrast-ratio {
-      font-size: clamp(18px, 4vw, 22px);
+      font-size: clamp(16px, 3.5vw, 20px);
       font-weight: 800;
       color: #fff;
-      margin-bottom: clamp(4px, 1vw, 6px);
+      margin-bottom: clamp(3px, 0.8vw, 5px);
     }
 
     .contrast-level {
-      font-size: clamp(10px, 2vw, 11px);
+      font-size: clamp(9px, 1.8vw, 10px);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -720,22 +788,23 @@
     .pass { color: #4ade80; }
     .fail { color: #ff8080; }
 
-    /* Variations Grid - Responsive */
+    /* Variations Grid - FIXED */
     .variations-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 15vw, 100px), 1fr));
-      gap: clamp(8px, 2vw, 12px);
+      grid-template-columns: repeat(auto-fill, minmax(clamp(65px, 13vw, 85px), 1fr));
+      gap: clamp(6px, 1.5vw, 10px);
+      width: 100%;
     }
 
     .variation-item {
       aspect-ratio: 1;
-      border-radius: 12px;
+      border-radius: clamp(8px, 1.5vw, 12px);
       border: 1px solid rgba(255,255,255,0.1);
       cursor: pointer;
       transition: all 200ms;
       position: relative;
       overflow: hidden;
-      min-height: 80px;
+      min-height: 65px;
     }
 
     .variation-item:hover {
@@ -748,94 +817,142 @@
       bottom: 0;
       left: 0;
       right: 0;
-      padding: clamp(4px, 1vw, 6px);
-      background: rgba(0,0,0,0.5);
+      padding: clamp(3px, 0.8vw, 5px);
+      background: rgba(0,0,0,0.6);
       backdrop-filter: blur(4px);
-      font-size: clamp(9px, 1.8vw, 10px);
+      font-size: clamp(8px, 1.6vw, 9px);
       font-weight: 700;
       color: #fff;
       text-align: center;
     }
 
-    /* Responsive Grid Layouts */
-    @media (min-width: 768px) {
-      .card {
-        grid-template-columns: minmax(300px, 1fr) minmax(300px, 1.5fr);
-      }
+    /* Alternative Matches - FIXED */
+    #alternativeMatches > div {
+      padding: clamp(10px, 2vw, 14px);
+      border-radius: clamp(8px, 1.5vw, 12px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+      transition: all 200ms;
+      width: 100%;
+      overflow: hidden;
     }
 
-    @media (min-width: 1200px) {
-      .card {
-        grid-template-columns: minmax(350px, 1fr) minmax(400px, 2fr);
-      }
+    #alternativeMatches > div > div:first-child {
+      flex: 1;
+      min-width: 0;
     }
 
-    @media (max-width: 767px) {
-      .input-row {
-        flex-direction: column;
-      }
+    #alternativeMatches > div > div:first-child > div:first-child {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      font-size: clamp(12px, 2.5vw, 14px);
+      word-break: break-word;
+    }
 
-      .hex-input {
-        width: 100%;
-      }
+    #alternativeMatches > div > div:first-child > div:last-child {
+      font-size: clamp(10px, 2vw, 11px);
+      color: rgba(230,238,248,0.6);
+      word-break: break-all;
+    }
 
-      .btn {
-        width: 100%;
+    #alternativeMatches > div > div:last-child {
+      width: clamp(28px, 6vw, 32px);
+      height: clamp(28px, 6vw, 32px);
+      border-radius: clamp(6px, 1.2vw, 8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      flex-shrink: 0;
+    }
+
+    /* Responsive Breakpoints */
+    @media (min-width: 641px) {
+      .card {
+        max-width: calc(100vw - 32px);
+        grid-template-columns: minmax(280px, 1fr) minmax(300px, 1.4fr);
       }
 
       .format-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .contrast-results {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .button-group .btn {
+        min-width: auto;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .card {
+        max-width: 1360px;
+        grid-template-columns: minmax(320px, 1fr) minmax(380px, 2fr);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1440px) {
+      .card {
+        max-width: 1500px;
+      }
+    }
+
+    /* Very Small Mobile Fix */
+    @media (max-width: 360px) {
+      .header-nav a span {
+        display: none;
+      }
+
+      .history-grid {
+        grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+      }
+
+      .variations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
       }
 
       .contrast-results {
         grid-template-columns: 1fr 1fr;
       }
-    }
 
-    @media (max-width: 480px) {
       .footer-content {
-        font-size: 10px;
-      }
-
-      .footer-content p {
-        margin: 0;
-      }
-
-      .history-grid {
-        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-      }
-
-      .variations-grid {
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-      }
-
-      .palette-colors {
-        grid-template-columns: repeat(5, 1fr);
+        font-size: 9px;
       }
     }
 
-    /* Ultra-wide screens */
-    @media (min-width: 1600px) {
-      .card {
-        max-width: 1600px;
-      }
-    }
-
-    /* Landscape mobile devices */
+    /* Landscape Mobile */
     @media (max-height: 600px) and (orientation: landscape) {
       .swatch {
-        min-height: 150px;
+        min-height: 120px;
       }
 
       main {
-        padding-top: calc(var(--header-height) + 10px);
-        padding-bottom: calc(var(--footer-height) + 10px);
+        padding-top: calc(var(--header-height) + 8px);
+        padding-bottom: calc(var(--footer-height) + 8px);
       }
     }
 
-    /* Print styles */
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Print */
     @media print {
-      .header, .footer, .tabs, .custom-color-picker {
+      .header, .footer, .tabs, .custom-color-picker, .orb {
         display: none;
       }
 
@@ -848,23 +965,14 @@
         border: 1px solid #000;
       }
     }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
   </style>
 </head>
 <body>
   <header class="header">
     <a href="/" class="header-logo">ChromaScope</a>
     <nav class="header-nav">
-      <a href="https://debojeet-bhowmick.netlify.app/#about" target="_blank">About</a>
-      <a href="https://github.com/D3b0j33t" target="_blank">
+      <a href="https://debojeet-bhowmick.netlify.app/#about" target="_blank"><span>About</span></a>
+      <a href="https://github.com/D3b0j33t" target="_blank" aria-label="GitHub">
         <i class="fab fa-github"></i>
       </a>
     </nav>
@@ -875,59 +983,58 @@
     <div class="orb o2"></div>
     <div class="card">
       <div class="left">
+        <!-- Swatch at top -->
+        <div class="swatch" id="swatch">
+          <div class="swatch-content">
+            <div class="swatch-hex" id="swatchHex">#40E0D0</div>
+            <div class="swatch-name" id="swatchName">Turquoise</div>
+          </div>
+        </div>
         
-        
+        <!-- Hex Input -->
         <div class="input-section">
           <div class="label">Enter Hex Color</div>
           <div class="input-row">
-            <input id="hexInput" class="hex-input" placeholder="#40E0D0 or 40E0D0" maxlength="7" autocomplete="off" spellcheck="false" />
+            <input id="hexInput" class="hex-input" placeholder="#40E0D0" maxlength="7" autocomplete="off" spellcheck="false" />
             <button id="applyBtn" class="btn primary" type="button">Apply</button>
           </div>
         </div>
         
+        <!-- Color Picker -->
         <div class="input-section">
-          <div class="label">Or Pick a Color</div>
+          <div class="label">Pick a Color</div>
           <div class="custom-color-picker">
-            <div class="color-preview" id="colorPreview" style="background-color: #40E0D0;"></div>
-            <div class="swatch" id="swatch">
-              <div class="swatch-content">
-                <div class="swatch-hex" id="swatchHex">#40E0D0</div>
-                <div class="swatch-name" id="swatchName">Turquoise</div>
-              </div>
-            </div>
             <div class="picker-canvas-wrapper">
               <canvas id="colorWheel" width="220" height="220"></canvas>
-              <input type="range" id="brightness" class="brightness-slider" min="0" max="100" value="100">
+              <input type="range" id="brightness" class="brightness-slider" min="0" max="100" value="100" aria-label="Brightness">
             </div>
             <div class="color-controls">
               <div class="color-value" id="colorHex">#40E0D0</div>
+            </div>
+            <div class="button-group">
               <button id="copyHex" class="btn" type="button">Copy Hex</button>
-              <button id="randomBtn" class="btn">Random Color</button>
+              <button id="randomBtn" class="btn" type="button">Random</button>
             </div>
           </div>
         </div>
-        
-        <!-- <div style="display:flex;gap:clamp(6px, 1.5vw, 8px);flex-wrap:wrap;">
-          <button id="randomBtn" class="btn">Random Color</button>
-        </div> -->
         
         <div id="error" class="error" role="alert" aria-live="polite"></div>
       </div>
       
       <div class="right">
-        <div class="tabs">
-          <button class="tab active" data-tab="info">Color Info</button>
-          <button class="tab" data-tab="formats">Formats</button>
-          <button class="tab" data-tab="palettes">Palettes</button>
-          <button class="tab" data-tab="contrast">Contrast</button>
-          <button class="tab" data-tab="variations">Variations</button>
-          <button class="tab" data-tab="history">History</button>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="info" role="tab" aria-selected="true">Info</button>
+          <button class="tab" data-tab="formats" role="tab" aria-selected="false">Formats</button>
+          <button class="tab" data-tab="palettes" role="tab" aria-selected="false">Palettes</button>
+          <button class="tab" data-tab="contrast" role="tab" aria-selected="false">Contrast</button>
+          <button class="tab" data-tab="variations" role="tab" aria-selected="false">Tints</button>
+          <button class="tab" data-tab="history" role="tab" aria-selected="false">History</button>
         </div>
         
         <!-- Tab Content: Info -->
-        <div class="tab-content active" id="tab-info">
+        <div class="tab-content active" id="tab-info" role="tabpanel">
           <div class="name-plate" id="namePlate">
-            <div style="flex:1;">
+            <div style="flex:1;min-width:0;">
               <div class="color-name" id="primaryName">Turquoise</div>
               <div class="color-hex-display" id="secondaryHex">#40E0D0</div>
             </div>
@@ -936,44 +1043,44 @@
             </div>
           </div>
           
-          <div style="margin-top: clamp(16px, 3vw, 24px);">
+          <div style="margin-top: clamp(12px, 2.5vw, 20px);">
             <div class="section-header">Alternative Names</div>
-            <div class="small" style="margin-bottom: clamp(10px, 2vw, 12px);">Other close matches from color databases</div>
-            <div id="alternativeMatches" style="display: flex; flex-direction: column; gap: clamp(10px, 2vw, 12px);"></div>
+            <div class="small" style="margin-bottom: clamp(8px, 1.8vw, 10px);">Close matches from database</div>
+            <div id="alternativeMatches" style="display: flex; flex-direction: column; gap: clamp(8px, 1.8vw, 10px);"></div>
           </div>
         </div>
         
         <!-- Tab Content: Formats -->
-        <div class="tab-content" id="tab-formats">
+        <div class="tab-content" id="tab-formats" role="tabpanel">
           <div class="section-header">Color Formats</div>
           <div class="format-grid" id="formatGrid"></div>
         </div>
         
         <!-- Tab Content: Palettes -->
-        <div class="tab-content" id="tab-palettes">
-          <div class="section-header">Color Harmony Palettes</div>
+        <div class="tab-content" id="tab-palettes" role="tabpanel">
+          <div class="section-header">Color Harmony</div>
           <div class="palette-grid" id="paletteGrid"></div>
-          <button id="exportCSSBtn" class="btn primary" style="margin-top: clamp(12px, 2.5vw, 16px);">Export as CSS Variables</button>
+          <button id="exportCSSBtn" class="btn primary" style="margin-top: clamp(10px, 2vw, 14px);width:100%;">Export CSS</button>
         </div>
         
         <!-- Tab Content: Contrast -->
-        <div class="tab-content" id="tab-contrast">
-          <div class="section-header">WCAG Contrast Checker</div>
+        <div class="tab-content" id="tab-contrast" role="tabpanel">
+          <div class="section-header">WCAG Contrast</div>
           <div class="contrast-demo" id="contrastDemo"></div>
         </div>
         
         <!-- Tab Content: Variations -->
-        <div class="tab-content" id="tab-variations">
+        <div class="tab-content" id="tab-variations" role="tabpanel">
           <div class="section-header">Shades & Tints</div>
           <div class="variations-grid" id="variationsGrid"></div>
         </div>
         
         <!-- Tab Content: History -->
-        <div class="tab-content" id="tab-history">
+        <div class="tab-content" id="tab-history" role="tabpanel">
           <div class="section-header">Color History</div>
-          <div class="small" style="margin-bottom: clamp(10px, 2vw, 12px);">Your last 10 picked colors</div>
+          <div class="small" style="margin-bottom: clamp(8px, 1.8vw, 10px);">Last 10 colors</div>
           <div class="history-grid" id="historyGrid"></div>
-          <button id="clearHistoryBtn" class="btn" style="margin-top: clamp(12px, 2.5vw, 16px);">Clear History</button>
+          <button id="clearHistoryBtn" class="btn" style="margin-top: clamp(10px, 2vw, 14px);width:100%;">Clear History</button>
         </div>
       </div>
     </div>
@@ -981,8 +1088,7 @@
   
   <footer class="footer">
     <div class="footer-content">
-      <p>Developed by <a href="mailto:debojeetbhowmick@gmail.com" target="_blank">Debojeet Bhowmick</a> | 
-      Connect on <a href="https://debojeet-bhowmick.netlify.app/" target="_blank">Website</a></p>
+      <p>Developed by <a href="mailto:debojeetbhowmick@gmail.com">Debojeet Bhowmick</a> | <a href="https://debojeet-bhowmick.netlify.app/" target="_blank">Website</a></p>
     </div>
   </footer>
 
@@ -1741,10 +1847,15 @@
       // Tab switching
       document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
-          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
           document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
           tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
           document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+          tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         });
       });
 
@@ -1993,7 +2104,7 @@
           sample.className = 'contrast-sample';
           sample.style.background = bg;
           sample.style.color = hex;
-          sample.textContent = `Sample Text on ${bg}`;
+          sample.textContent = `Sample on ${bg}`;
           elements.contrastDemo.appendChild(sample);
 
           const results = document.createElement('div');
@@ -2001,7 +2112,7 @@
           results.innerHTML = `
             <div class="contrast-result">
               <div class="contrast-ratio">${ratio.toFixed(2)}:1</div>
-              <div class="contrast-level">Contrast Ratio</div>
+              <div class="contrast-level">Ratio</div>
             </div>
             <div class="contrast-result">
               <div class="contrast-ratio ${aaNormal ? 'pass' : 'fail'}">${aaNormal ? '✓' : '✗'}</div>
@@ -2013,7 +2124,7 @@
             </div>
             <div class="contrast-result">
               <div class="contrast-ratio ${aaaNormal ? 'pass' : 'fail'}">${aaaNormal ? '✓' : '✗'}</div>
-              <div class="contrast-level">AAA Normal</div>
+              <div class="contrast-level">AAA</div>
             </div>
           `;
           elements.contrastDemo.appendChild(results);
@@ -2055,13 +2166,12 @@
         elements.alternativeMatches.innerHTML = '';
         matches.slice(1, 4).forEach(match => {
           const item = document.createElement('div');
-          item.style.cssText = 'padding: 12px 16px; border-radius: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 200ms;';
           item.innerHTML = `
             <div>
-              <div style="font-weight: 700; color: #fff; margin-bottom: 4px;">${match.name}</div>
-              <div style="font-size: 12px; color: rgba(230,238,248,0.6);">${match.hex} • ${Math.round(100 - match.distance/2.55)}% match</div>
+              <div>${match.name}</div>
+              <div>${match.hex} • ${Math.round(100 - match.distance/2.55)}%</div>
             </div>
-            <div style="width: 32px; height: 32px; border-radius: 8px; background: ${match.hex}; border: 1px solid rgba(255,255,255,0.1);"></div>
+            <div style="background: ${match.hex};"></div>
           `;
           item.onclick = () => {
             elements.hexInput.value = match.hex;
@@ -2114,7 +2224,7 @@
   --primary-hsl: ${hsl.h}, ${hsl.s}%, ${hsl.l}%;
 }`;
         navigator.clipboard.writeText(css);
-        showError('CSS variables copied to clipboard!');
+        showError('CSS variables copied!');
       });
 
       elements.clearHistoryBtn.addEventListener('click', () => {
@@ -2128,14 +2238,18 @@
       const wheel = document.getElementById("colorWheel");
       const ctx = wheel.getContext("2d");
       const brightness = document.getElementById("brightness");
-      const preview = document.getElementById("colorPreview");
       const colorHex = document.getElementById("colorHex");
 
+      let resizeTimeout;
       function resizeWheel() {
-        const size = Math.min(220, wheel.parentElement.offsetWidth - 32);
-        wheel.width = size;
-        wheel.height = size;
-        drawColorWheel();
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          const container = wheel.parentElement;
+          const size = Math.min(220, container.offsetWidth - 32);
+          wheel.width = size;
+          wheel.height = size;
+          drawColorWheel();
+        }, 100);
       }
 
       window.addEventListener('resize', resizeWheel);
@@ -2179,7 +2293,6 @@
       function setCustomColor(hsl) {
         if (!hsl) return;
         const hex = hslToHex(hsl.h, hsl.s, hsl.l);
-        preview.style.background = hex;
         colorHex.textContent = hex;
         elements.hexInput.value = hex;
         updateColor(hex);
@@ -2211,9 +2324,13 @@
       wheel.addEventListener("touchstart", e => {
         dragging = true;
         handlePick(e);
+        e.preventDefault();
       }, { passive: false });
       wheel.addEventListener("touchmove", e => {
-        if (dragging) handlePick(e);
+        if (dragging) {
+          handlePick(e);
+          e.preventDefault();
+        }
       }, { passive: false });
       window.addEventListener("touchend", () => dragging = false);
 
@@ -2236,7 +2353,6 @@
 
       function updatePickerFromHex(hex) {
         const hsl = hexToHSL(hex);
-        preview.style.background = hex;
         colorHex.textContent = hex;
         brightness.value = Math.round((hsl.l - 25) / 0.5);
       }
